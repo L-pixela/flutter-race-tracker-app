@@ -14,6 +14,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  final String full_name = "John Doe";
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +35,19 @@ class MyApp extends StatelessWidget {
           ),
           body: Column(
             children: [
-              // ListView.builder(
-              //   itemCount: 2,
-              //   itemBuilder: (context, index) {
-              //     return ListTile(
-              //       title: Text("Cookie $index"),
-              //     );
-              //   },
-              // ),
-              AddUser("Me", "COOKIES", 15),
+              AddUser("John Doe", "Acme Inc.", 30),
               SizedBox(
                 height: 15,
               ),
+              GetUserByName(full_name),
+              SizedBox(
+                height: 15,
+              ),
+              UpdateUserByName(full_name),
+              SizedBox(
+                height: 15,
+              ),
+              DeleteUserByName(full_name),
             ],
           )),
     );

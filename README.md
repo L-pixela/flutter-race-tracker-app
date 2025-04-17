@@ -9,7 +9,7 @@ Follow these steps to set up and run the project on your local machine.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/race_tracker_project.git
+git clone https://github.com/L-pixela/flutter-race-tracker-app.git
 cd race_tracker_project
 ```
 ### 2. Initialize the Project Pubspec

@@ -35,35 +35,86 @@ class AddUser extends StatelessWidget {
   }
 }
 
-class GetUserName extends StatelessWidget {
-  final String documentId;
+class GetUserByName extends StatelessWidget {
+  final String fullName;
 
-  GetUserName(this.documentId);
+  GetUserByName(this.fullName);
 
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-    return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(documentId).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
+    return FutureBuilder<QuerySnapshot>(
+      future: users.where('full_name', isEqualTo: fullName).get(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) return Text("Something went wrong");
+        if (snapshot.connectionState != ConnectionState.done)
+          return Text("loading...");
 
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
-        }
+        if (snapshot.data!.docs.isEmpty) return Text("User not found");
 
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          return Text("Full Name: ${data['full_name']}");
-        }
-
-        return Text("loading");
+        final data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+        return Text(
+            "Full Name: ${data['full_name']}, Company: ${data['company']}");
       },
+    );
+  }
+}
+
+class UpdateUserByName extends StatelessWidget {
+  final String fullName;
+
+  UpdateUserByName(this.fullName);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    Future<void> updateUser() async {
+      final snapshot =
+          await users.where('full_name', isEqualTo: fullName).get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final docId = snapshot.docs.first.id;
+        await users.doc(docId).update({'company': 'Updated Company'});
+        print("User Updated");
+      } else {
+        print("User not found");
+      }
+    }
+
+    return ElevatedButton(
+      onPressed: updateUser,
+      child: Text("Update User"),
+    );
+  }
+}
+
+class DeleteUserByName extends StatelessWidget {
+  final String fullName;
+
+  DeleteUserByName(this.fullName);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    Future<void> deleteUser() async {
+      final snapshot =
+          await users.where('full_name', isEqualTo: fullName).get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final docId = snapshot.docs.first.id;
+        await users.doc(docId).delete();
+        print("User Deleted");
+      } else {
+        print("User not found");
+      }
+    }
+
+    return ElevatedButton(
+      onPressed: deleteUser,
+      child: Text("Delete User"),
     );
   }
 }
