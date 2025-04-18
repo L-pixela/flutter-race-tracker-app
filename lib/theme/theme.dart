@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+///
+/// Define the Race Tracker App Colors
+///
 class RaceColors {
   static const Color primary = Color(0xFF060D4C); // Navy Blue
   static const Color accent = Color(0xFFFF8500); // Orange
@@ -27,6 +30,11 @@ class RaceColors {
   static Color get disabled => lightGrey;
 }
 
+///
+/// Define the Spacing in pixels
+/// with small (s), medium (m), large (l), extra large (xl), extra extra large (xxl)
+/// as well as the radius
+///
 class RaceSpacings {
   static const double s = 12;
   static const double m = 16;
@@ -38,9 +46,15 @@ class RaceSpacings {
   static const double radiusLarge = 24;
 }
 
+///
+/// Define the app textStyle with heading, body, label, button
+///
 class RaceTextStyles {
   static TextStyle heading = TextStyle(
       fontSize: 28, fontWeight: FontWeight.w500, color: RaceColors.textHeading);
+
+  static TextStyle darkHeading = TextStyle(
+      fontSize: 28, fontWeight: FontWeight.w500, color: RaceColors.textOnDark);
 
   static TextStyle body = TextStyle(
       fontSize: 16, fontWeight: FontWeight.w400, color: RaceColors.textPrimary);
@@ -51,3 +65,11 @@ class RaceTextStyles {
   static TextStyle button = TextStyle(
       fontSize: 14, fontWeight: FontWeight.w500, color: RaceColors.white);
 }
+
+///
+/// Define the entire app theme
+///
+ThemeData raceAppTheme = ThemeData(
+    fontFamily: 'Roboto',
+    scaffoldBackgroundColor: RaceColors.background,
+    primaryColor: RaceColors.primary);
