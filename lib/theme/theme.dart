@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 ///
 class RaceColors {
   static const Color primary = Color(0xFF060D4C); // Navy Blue
-  static const Color accent = Color(0xFFFF8500); // Orange
-  static const Color lightGrey = Color(0xFFCCCCCC);
-  static const Color peach = Color(0xFFFFDAB9);
+  static const Color lightGrey = Color(0xFFCCCCCC); // Light Grey
+  static const Color orange = Color(0xFFFF8500); // Orange
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;
@@ -24,8 +23,8 @@ class RaceColors {
 
   // Buttons
   static Color get buttonPrimary => primary;
-  static Color get buttonAccent => accent;
-  static Color get buttonSecondary => peach;
+  static Color get buttonAccent => white;
+  static Color get buttonSecondary => orange;
 
   static Color get disabled => lightGrey;
 }
