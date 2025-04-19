@@ -11,5 +11,10 @@ class Checkpoint {
   final DateTime timeStamp;
   final RaceSegment segment;
 
-  const Checkpoint(this.race, this.participant, this.segment, this.timeStamp);
+  const Checkpoint({
+    required this.race,
+    required this.participant,
+    required this.segment,
+    required this.timeStamp,
+  });
 }

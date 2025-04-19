@@ -15,8 +15,17 @@ class Race {
   final RaceStatus raceStatus;
   final DateTime date;
 
-  const Race(
-      this.raceId, this.raceEvent, this.raceStatus, this.location, this.date);
+  const Race({
+    required this.raceId,
+    required this.raceEvent,
+    required this.raceStatus,
+    required this.location,
+    required this.date,
+  });
+
+  bool isOngoing() => raceStatus == RaceStatus.ongoing;
+  bool isCompleted() => raceStatus == RaceStatus.completed;
+  bool isUpcoming() => raceStatus == RaceStatus.upcoming;
 
   @override
   String toString() {

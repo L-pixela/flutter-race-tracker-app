@@ -1,12 +1,21 @@
 ///
 /// Participant Status enum
 ///
-enum ParticipantStatus { ongoing, notStarted, finished }
+enum ParticipantStatus {
+  ongoing('Ongoing'),
+  notStarted('Not Started'),
+  finished('Finished');
+
+  final String label;
+
+  const ParticipantStatus(this.label);
+}
 
 ///
 /// Participant class
 ///
 class Participant {
+  final String raceId;
   final int bibNumber;
   final String name;
   final String gender;
@@ -14,11 +23,17 @@ class Participant {
   final DateTime finishDate;
   final ParticipantStatus participantStatus;
 
-  const Participant(this.bibNumber, this.name, this.gender,
-      this.participantStatus, this.startDate, this.finishDate);
+  const Participant(
+      {required this.raceId,
+      required this.bibNumber,
+      required this.name,
+      required this.gender,
+      required this.participantStatus,
+      required this.startDate,
+      required this.finishDate});
 
   @override
   String toString() {
-    return " Participant: {Bib: $bibNumber, Name: $name, Gender: $gender, Status: $participantStatus}";
+    return " Participant: {Race ID: $raceId, Bib: $bibNumber, Name: $name, Gender: $gender, Status: $participantStatus}";
   }
 }

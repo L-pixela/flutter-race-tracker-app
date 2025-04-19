@@ -8,12 +8,15 @@ enum Region { europe, asia, southAmerica, oceania }
 /// with attributes: name and continent (To be updated)
 class Location {
   final String name;
-  final Region continent;
+  final Region region;
 
-  const Location(this.name, this.continent);
+  const Location({
+    required this.name,
+    required this.region,
+  });
 
   @override
   String toString() {
-    return "{Country: $name, Continent: $continent}";
+    return "{Country: $name, Region: $region}";
   }
 }
