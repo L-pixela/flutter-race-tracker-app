@@ -5,7 +5,6 @@ import 'package:race_tracker_project/data/dto/participant_dto.dart';
 void main() {
   // Define a common test participant
   Participant testParticipant = Participant(
-    raceId: "race_123",
     bibNumber: 42,
     name: "Test Runner",
     gender: "Male",
@@ -21,7 +20,6 @@ void main() {
 
       // Then
       expect(json, {
-        'raceId': 'race_123',
         'bibNumber': 42,
         'name': 'Test Runner',
         'gender': 'Male',
@@ -34,7 +32,6 @@ void main() {
     test('should convert JSON to Participant correctly', () {
       // Given
       final json = {
-        'raceId': 'race_123',
         'bibNumber': 42,
         'name': 'Test Runner',
         'gender': 'Male',
@@ -47,7 +44,6 @@ void main() {
       final result = ParticipantDto.fromJson(json);
 
       // Then
-      expect(result.raceId, testParticipant.raceId);
       expect(result.bibNumber, testParticipant.bibNumber);
       expect(result.name, testParticipant.name);
       expect(result.gender, testParticipant.gender);
@@ -77,7 +73,7 @@ void main() {
       final stringRep = testParticipant.toString();
 
       // Then
-      expect(stringRep, contains('Participant: {Race ID: race_123'));
+      expect(stringRep, contains('Participant: {'));
       expect(stringRep, contains('Bib: 42'));
       expect(stringRep, contains('Name: Test Runner'));
       expect(stringRep, contains('Status: ParticipantStatus.finished'));

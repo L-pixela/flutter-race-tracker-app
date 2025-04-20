@@ -15,22 +15,20 @@ enum ParticipantStatus {
 /// Participant class
 ///
 class Participant {
-  final String raceId;
   final int bibNumber;
   final String name;
   final String gender;
-  final DateTime startDate;
-  final DateTime finishDate;
+  final DateTime? startDate;
+  final DateTime? finishDate;
   final ParticipantStatus participantStatus;
 
   const Participant(
-      {required this.raceId,
-      required this.bibNumber,
+      {required this.bibNumber,
       required this.name,
       required this.gender,
       required this.participantStatus,
-      required this.startDate,
-      required this.finishDate});
+      this.startDate,
+      this.finishDate});
 
   bool get isOngoing => participantStatus == ParticipantStatus.ongoing;
   bool get isNotStarted => participantStatus == ParticipantStatus.notStarted;
@@ -38,6 +36,6 @@ class Participant {
 
   @override
   String toString() {
-    return " Participant: {Race ID: $raceId, Bib: $bibNumber, Name: $name, Gender: $gender, Status: $participantStatus}";
+    return " Participant: {Bib: $bibNumber, Name: $name, Gender: $gender, Status: $participantStatus}";
   }
 }
