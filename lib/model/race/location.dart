@@ -1,7 +1,16 @@
 ///
 /// Continent Enum for Location
 ///
-enum Region { europe, asia, southAmerica, oceania }
+enum Region {
+  europe("Europe"),
+  asia("Asia"),
+  southAmerica("South America"),
+  oceania("Oceania");
+
+  final String label;
+
+  const Region(this.label);
+}
 
 ///
 /// Location class on where the race is being held

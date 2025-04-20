@@ -32,6 +32,10 @@ class Participant {
       required this.startDate,
       required this.finishDate});
 
+  bool get isOngoing => participantStatus == ParticipantStatus.ongoing;
+  bool get isNotStarted => participantStatus == ParticipantStatus.notStarted;
+  bool get isFinished => participantStatus == ParticipantStatus.finished;
+
   @override
   String toString() {
     return " Participant: {Race ID: $raceId, Bib: $bibNumber, Name: $name, Gender: $gender, Status: $participantStatus}";

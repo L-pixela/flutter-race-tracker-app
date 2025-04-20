@@ -1,19 +1,17 @@
-import 'package:race_tracker_project/model/participant/participant.dart';
-import 'package:race_tracker_project/model/race/race.dart';
 import 'package:race_tracker_project/model/race_segment/race_segment.dart';
 
 ///
 /// Checkpoint Class to store the participant time of finishing each segment
 ///
 class Checkpoint {
-  final Race race;
-  final Participant participant;
+  final int bibNumber;
+  final String raceId;
   final DateTime timeStamp;
   final RaceSegment segment;
 
   const Checkpoint({
-    required this.race,
-    required this.participant,
+    required this.raceId,
+    required this.bibNumber,
     required this.segment,
     required this.timeStamp,
   });

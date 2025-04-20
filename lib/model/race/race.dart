@@ -3,7 +3,15 @@ import 'package:race_tracker_project/model/race/location.dart';
 ///
 /// Race Status
 ///
-enum RaceStatus { ongoing, upcoming, completed }
+enum RaceStatus {
+  ongoing("Ongoing"),
+  upcoming("Upcoming"),
+  completed("Completed");
+
+  final String label;
+
+  const RaceStatus(this.label);
+}
 
 ///
 /// Race Class to know which is race is being held with Location Ref
