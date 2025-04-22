@@ -20,13 +20,13 @@ class Participant {
   final String gender;
   final DateTime? startDate;
   final DateTime? finishDate;
-  final ParticipantStatus participantStatus;
+  final ParticipantStatus? participantStatus;
 
   const Participant(
       {required this.bibNumber,
       required this.name,
       required this.gender,
-      required this.participantStatus,
+      this.participantStatus = ParticipantStatus.notStarted,
       this.startDate,
       this.finishDate});
 

@@ -8,7 +8,7 @@ class ParticipantDto {
       'gender': model.gender,
       'startDate': model.startDate?.toIso8601String(),
       'endDate': model.finishDate?.toIso8601String(),
-      'status': model.participantStatus.label
+      'status': model.participantStatus?.label
     };
   }
 
