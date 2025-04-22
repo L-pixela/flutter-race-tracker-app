@@ -15,6 +15,7 @@ enum ParticipantStatus {
 /// Participant class
 ///
 class Participant {
+  final String raceId;
   final int bibNumber;
   final String name;
   final String gender;
@@ -23,7 +24,8 @@ class Participant {
   final ParticipantStatus? participantStatus;
 
   const Participant(
-      {required this.bibNumber,
+      {required this.raceId,
+      required this.bibNumber,
       required this.name,
       required this.gender,
       this.participantStatus = ParticipantStatus.notStarted,

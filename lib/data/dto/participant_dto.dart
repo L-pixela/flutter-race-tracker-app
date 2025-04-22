@@ -3,6 +3,7 @@ import 'package:race_tracker_project/model/participant/participant.dart';
 class ParticipantDto {
   static Map<String, dynamic> toJson(Participant model) {
     return {
+      'raceId': model.raceId,
       'bibNumber': model.bibNumber,
       'name': model.name,
       'gender': model.gender,
@@ -14,6 +15,7 @@ class ParticipantDto {
 
   static Participant fromJson(Map<String, dynamic> json) {
     return Participant(
+        raceId: json['raceId'],
         bibNumber: json['bibNumber'],
         name: json['name'],
         gender: json['gender'],
