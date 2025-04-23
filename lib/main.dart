@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:race_tracker_project/data/firebase/firebase_testing.dart';
+import 'package:race_tracker_project/screens/manager_screens/dash_board_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
+import 'package:race_tracker_project/widgets/race_botton.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -31,33 +33,48 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: raceAppTheme,
       home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: RaceColors.primary,
-            title: Text(
-              "Cookies",
-              style: RaceTextStyles.darkHeading,
-            ),
-            centerTitle: true,
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/images/triathlon-yellow.gif")
-              // AddUser("John Doe", "Acme Inc.", 30),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // GetUserByName(full_name),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // UpdateUserByName(full_name),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // DeleteUserByName(full_name),
-            ],
-          )),
+        // appBar: AppBar(
+        //   backgroundColor: RaceColors.primary,
+        //   title: Text(
+        //     "Cookies",
+        //     style: RaceTextStyles.darkHeading,
+        //   ),
+        //   centerTitle: true,
+        // ),
+        body: const DashboardScreen(),
+
+        // RegisterForm(selectedGender: '',)
+
+        // body: Column(
+
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     /// test the race button
+        //     // Center(
+        //     //   child: RaceButton(
+        //     //     text: '09002',
+        //     //     onPressed: () => print('Button clicked!'),
+        //     //     width: 100,
+        //     //   ),
+        //     // ),
+
+        //     Image.asset("assets/images/triathlon-yellow.gif")
+        //     // AddUser("John Doe", "Acme Inc.", 30),
+        //     // SizedBox(
+        //     //   height: 15,
+        //     // ),
+        //     // GetUserByName(full_name),
+        //     // SizedBox(
+        //     //   height: 15,
+        //     // ),
+        //     // UpdateUserByName(full_name),
+        //     // SizedBox(
+        //     //   height: 15,
+        //     // ),
+        //     // DeleteUserByName(full_name),
+        //   ],
+        // )
+      ),
     );
   }
 }
