@@ -62,7 +62,7 @@ class _ParticipantFormState extends State<ParticipantForm> {
     }
 
     final participant = Participant(
-      raceId: _selectedRace!.raceId,
+      race: _selectedRace!,
       bibNumber: bib,
       name: _nameController.text,
       gender: _genderController.text,

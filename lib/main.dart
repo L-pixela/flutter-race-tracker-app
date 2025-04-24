@@ -1,32 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:race_tracker_project/data/firebase/firebase_testing.dart';
+import 'package:provider/provider.dart';
+import 'package:race_tracker_project/data/firebase/firebase_participant_repository.dart';
+import 'package:race_tracker_project/data/repository/participant_repository.dart';
+import 'package:race_tracker_project/firebase_options.dart';
+import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
+import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/theme/theme.dart';
-import 'firebase_options.dart';
 
 void main() async {
+  // 1. Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+
+  // 2. Initialize Repository for Provider
+  ParticipantRepository participantRepository = FirebaseParticipantRepository();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+          create: (context) =>
+              ParticipantProvider(repository: participantRepository)),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  final String full_name = "John Doe";
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        print(doc["full_name"]);
-      });
-    });
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: raceAppTheme,
@@ -39,25 +44,7 @@ class MyApp extends StatelessWidget {
             ),
             centerTitle: true,
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/images/triathlon-yellow.gif")
-              // AddUser("John Doe", "Acme Inc.", 30),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // GetUserByName(full_name),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // UpdateUserByName(full_name),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // DeleteUserByName(full_name),
-            ],
-          )),
+          body: DashboardScreen()),
     );
   }
 }
