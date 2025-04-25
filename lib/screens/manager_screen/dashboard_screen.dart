@@ -11,6 +11,7 @@ import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
+import 'package:race_tracker_project/widgets/navigation_bar.dart';
 
 ///
 /// This is the Dashboard Screen for Race Manager to see the participants
@@ -41,6 +42,7 @@ class DashboardScreen extends StatelessWidget {
     final participantProvider = context.watch<ParticipantProvider>();
 
     return Scaffold(
+      bottomNavigationBar: Navigation_Bar(),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(120),
         child: AppBar(
