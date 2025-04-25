@@ -49,17 +49,66 @@ class DashboardScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 12.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Home',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+              padding:
+                  const EdgeInsets.only(left: 16.0, top: 12.0, right: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Home',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  // Row with search bar and button
+                  Row(
+                    children: [
+                      // Short search bar
+                      Expanded(
+                        child: SizedBox(
+                          height: 36,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Search...',
+                              hintStyle: TextStyle(color: Colors.white70),
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.white),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.2),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 0,
+                                horizontal: 10,
+                              ),
+                            ),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      // Button Go to Tracker
+
+                      Button(
+                        onPressed: () {
+                          // Export Data logic
+                        },
+                        type: ButtonType.secondary,
+                        text: 'Tracker',
+                        icon: Icons.timer,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -134,7 +183,11 @@ class DashboardScreen extends StatelessWidget {
             physics: AlwaysScrollableScrollPhysics(),
             itemCount: participantValue.data!.length,
             itemBuilder: (ctx, index) => ParticipantTile(
-                onTap: () {}, participant: participantValue.data![index]));
+                  onTap: () {},
+                  participant: participantValue.data![index],
+                  onEdit: () {},
+                  onDelete: () {},
+                ));
     }
   }
 }
