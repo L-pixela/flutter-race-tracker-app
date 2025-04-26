@@ -13,8 +13,9 @@ class ParticipantTile extends StatelessWidget {
       required this.onDelete});
 
   String get title =>
-      "Bib Number: ${participant.bibNumber} - ${participant.name}";
-  String get subTitle => "${participant.gender} ";
+      "Bib Number: ${participant.bibNumber} - Race: ${participant.raceId}";
+  String get subTitle =>
+      "Name: ${participant.name} \nGender:${participant.gender} ";
   String get trailing => "${participant.participantStatus!.label} ";
 
   @override

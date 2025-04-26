@@ -53,11 +53,18 @@ class MockParticipantRepository implements ParticipantRepository {
   }
 
   @override
-  Future<void> deleteParticipant(int bibNumber) async {
+  Future<void> deleteParticipant(int bibNumber, String raceId) async {
     _participants.remove(bibNumber);
   }
 
   @override
   Future<Participant?> getParticipantByBibNumber(int bibNumber) async =>
       _participants[bibNumber];
+
+  @override
+  Future<bool> checkBibNumberExists(
+      {required String raceId, required int bibNumber}) {
+    // TODO: implement checkBibNumberExists
+    throw UnimplementedError();
+  }
 }

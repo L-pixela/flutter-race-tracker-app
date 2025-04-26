@@ -34,7 +34,7 @@ class _TestFirebaseRaceRepoScreenState
       raceEvent: eventNameController.text.trim(),
       raceStatus: RaceStatus.ongoing,
       location: const Location(name: 'Paris', region: Region.europe),
-      date: DateTime.now(),
+      startDate: DateTime.now(),
     );
 
     try {
@@ -111,7 +111,7 @@ class _TestFirebaseRaceRepoScreenState
                             DataCell(Text(race.raceEvent)),
                             DataCell(Text(race.location.name)),
                             DataCell(Text(race.raceStatus.label)),
-                            DataCell(Text(race.date.toIso8601String())),
+                            DataCell(Text(race.startDate!.toIso8601String())),
                           ]))
                       .toList(),
                 ),

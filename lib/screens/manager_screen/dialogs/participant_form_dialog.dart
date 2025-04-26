@@ -1,9 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:race_tracker_project/data/firebase/firebase_race_repository.dart';
 import 'package:race_tracker_project/model/participant/participant.dart';
 import 'package:race_tracker_project/model/race/race.dart';
+import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
@@ -48,22 +50,42 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
   // ----------------------------------
   // Handle events
   // ----------------------------------
-  void onSubmit() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      final newParticipant = Participant(
-          raceId: raceId,
-          bibNumber: bibNumber,
-          name: name,
-          gender: widget.gender);
-
-      Navigator.pop(context, newParticipant);
-    } else {
+  void onSubmit() async {
+    // Handle the form validation
+    if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please complete the form correctly.')),
       );
+      return;
     }
+    // after validating save the form value
+    _formKey.currentState!.save();
+
+    // check if the bibNumber of participant already exist
+    // if not can add new participant
+    bool exists = await context
+        .read<ParticipantProvider>()
+        .checkbibNumberExist(raceId, bibNumber);
+
+    final isEditing = widget.participant != null;
+
+    if (exists && !isEditing) {
+      // Only show error if it's a new participant, not editing
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Bib number already exists! Please choose another.')),
+      );
+      return;
+    }
+
+    // create the Participant
+    final newParticipant = Participant(
+        raceId: raceId,
+        bibNumber: bibNumber,
+        name: name,
+        gender: widget.gender);
+    // Return data with pop
+    Navigator.pop(context, newParticipant);
   }
 
   Future<void> _loadRaces() async {

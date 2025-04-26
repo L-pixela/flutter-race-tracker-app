@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (confirm == true) {
       context
           .read<ParticipantProvider>()
-          .deleteParticipant(participant.bibNumber);
+          .deleteParticipant(participant.bibNumber, participant.raceId);
     }
   }
 

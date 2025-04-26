@@ -18,15 +18,25 @@ class ParticipantProvider extends ChangeNotifier {
 
   Future<void> addParticipant(Participant participants) async {
     try {
-      // 1. Add data to repository
+      // 1. Check if bib number exists
+      bool exists = await repository.checkBibNumberExists(
+          raceId: participants.raceId, bibNumber: participants.bibNumber);
+
+      if (exists) {
+        throw Exception(
+            "Bib number already exists. Please choose a different number.");
+      }
+
+      // 2. Add the data
       await repository.addParticipant(participants);
 
-      // 2. Fetch Data from repository
+      // 3. Fetch Data from repository
       await fetchParticipants();
 
-      // 3. Handle Error
+      // 4. Handle Error
     } catch (e) {
       participant = AsyncValue.error(e);
+      rethrow;
     }
     notifyListeners();
   }
@@ -51,10 +61,10 @@ class ParticipantProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteParticipant(int bibNumber) async {
+  Future<void> deleteParticipant(int bibNumber, String raceId) async {
     try {
       // 1. Delete from repository
-      await repository.deleteParticipant(bibNumber);
+      await repository.deleteParticipant(bibNumber, raceId);
 
       // 2. Refresh the list after deletion
       await fetchParticipants();
@@ -79,5 +89,17 @@ class ParticipantProvider extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<bool> checkbibNumberExist(String raceId, int bibNumber) async {
+    try {
+      // 1. Check the data if it exists
+      return await repository.checkBibNumberExists(
+          raceId: raceId, bibNumber: bibNumber);
+    } catch (e) {
+      participant = AsyncValue.error(e);
+      notifyListeners();
+      return false;
+    }
   }
 }

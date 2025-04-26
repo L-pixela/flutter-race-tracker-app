@@ -8,98 +8,107 @@ class FirebaseParticipantRepository implements ParticipantRepository {
   final String _collection = 'participants';
 
   @override
-  Future<void> addParticipant(Participant participant) {
+  Future<void> addParticipant(Participant participant) async {
     try {
       final participantJson = ParticipantDto.toJson(participant);
-      return _firestore
-          .collection(_collection)
-          .doc(participant.bibNumber.toString())
-          .set(participantJson)
-          .then((_) => print("Participant added successfully"))
-          .catchError((error) => print("Failed to add participant: $error"));
+      await _firestore.collection(_collection).add(participantJson);
     } catch (e) {
       throw Exception('Failed to add participant: $e');
     }
   }
 
   @override
-  Future<void> deleteParticipant(int bibNumber) {
+  Future<void> deleteParticipant(int bibNumber, String raceId) async {
     try {
-      return _firestore
+      // Find the data where it match the bibNumber and raceId
+      final querySnapShot = await _firestore
           .collection(_collection)
-          .doc(bibNumber.toString())
-          .delete()
-          .then((_) => print("Participant deleted successfully"))
-          .catchError((error) => print("Failed to delete participant: $error"));
+          .where('bibNumber', isEqualTo: bibNumber)
+          .where('raceId', isEqualTo: raceId)
+          .limit(1)
+          .get();
+      // check for the doc if it is empty
+      if (querySnapShot.docs.isEmpty) {
+        throw Exception('Participant not found for deletion');
+      }
+      // get the docId
+      final docId = querySnapShot.docs.first.id;
+      // Perform the deletion
+      await _firestore.collection(_collection).doc(docId).delete();
     } catch (e) {
       throw Exception('Failed to delete participant: $e');
     }
   }
 
   @override
-  Future<List<Participant>> getAllParticipants() {
+  Future<List<Participant>> getAllParticipants() async {
     try {
       return _firestore.collection(_collection).get().then((snapshot) {
-        print("Participants fetched successfully");
         return snapshot.docs
             .map((doc) => ParticipantDto.fromJson(doc.data()))
             .toList();
-      }).catchError((error) => print("Failed to fetch participants: $error"));
+      });
     } catch (e) {
       throw Exception('Failed to fetch participants: $e');
     }
   }
 
   @override
-  Future<Participant?> getParticipantByBibNumber(int bibNumber) {
+  Future<List<Participant>> searchParticipantByRaceId(String raceId) async {
     try {
-      return _firestore
-          .collection(_collection)
-          .doc(bibNumber.toString())
-          .get()
-          .then((doc) {
-        if (doc.exists) {
-          print("Participant fetched successfully");
-          return ParticipantDto.fromJson(doc.data()!);
-        }
-        return null;
-      }).catchError((error) => print("Failed to fetch participant: $error"));
-    } catch (e) {
-      throw Exception('Failed to fetch participant: $e');
-    }
-  }
-
-  @override
-  Future<List<Participant>> searchParticipantByRaceId(String raceId) {
-    try {
-      return _firestore
+      return await _firestore
           .collection(_collection)
           .where('raceId', isEqualTo: raceId)
           .get()
           .then((snapshot) {
-        print("Participants searched by raceId successfully");
         return snapshot.docs
             .map((doc) => ParticipantDto.fromJson(doc.data()))
             .toList();
-      }).catchError((error) =>
-              print("Failed to search participants by raceId: $error"));
+      });
     } catch (e) {
       throw Exception('Failed to search participants by raceId: $e');
     }
   }
 
   @override
-  Future<void> updateParticipant(Participant participant) {
+  Future<void> updateParticipant(Participant participant) async {
     try {
-      final participantJson = ParticipantDto.toJson(participant);
-      return _firestore
+      final querySnapshot = await _firestore
           .collection(_collection)
-          .doc(participant.bibNumber.toString())
-          .set(participantJson)
-          .then((_) => print("Participant updated successfully"))
-          .catchError((error) => print("Failed to update participant: $error"));
+          .where('bibNumber', isEqualTo: participant.bibNumber)
+          .where('raceId', isEqualTo: participant.raceId)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        throw Exception('Participant not found!');
+      }
+      final docId = querySnapshot.docs.first.id;
+
+      final participantJson = ParticipantDto.toJson(participant);
+
+      await _firestore
+          .collection(_collection)
+          .doc(docId)
+          .update(participantJson);
     } catch (e) {
       throw Exception('Failed to update participant: $e');
+    }
+  }
+
+  @override
+  Future<bool> checkBibNumberExists(
+      {required String raceId, required int bibNumber}) async {
+    try {
+      final snapshot = await _firestore
+          .collection(_collection)
+          .where('raceId', isEqualTo: raceId)
+          .where('bibNumber', isEqualTo: bibNumber)
+          .limit(1)
+          .get();
+
+      return snapshot.docs.isNotEmpty;
+    } catch (e) {
+      throw Exception('Failed to check Bib number existence: $e');
     }
   }
 }

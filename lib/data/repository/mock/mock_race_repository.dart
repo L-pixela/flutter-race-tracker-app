@@ -9,14 +9,14 @@ class MockRaceRepository implements RaceRepository {
       raceEvent: 'City Triathlon',
       raceStatus: RaceStatus.ongoing,
       location: Location(name: 'Paris', region: Region.europe),
-      date: DateTime.now(),
+      startDate: DateTime.now(),
     ),
     'r2': Race(
       raceId: 'r2',
       raceEvent: 'Beach Dash',
       raceStatus: RaceStatus.upcoming,
       location: Location(name: 'Sydney', region: Region.oceania),
-      date: DateTime.now().add(Duration(days: 5)),
+      startDate: DateTime.now().add(Duration(days: 5)),
     ),
   };
 

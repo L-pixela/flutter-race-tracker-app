@@ -54,8 +54,8 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
     _loadParticipants(); // refresh the list
   }
 
-  Future<void> _deleteParticipant(int bibNumber) async {
-    await _repository.deleteParticipant(bibNumber);
+  Future<void> _deleteParticipant(int bibNumber, String raceId) async {
+    await _repository.deleteParticipant(bibNumber, raceId);
     _loadParticipants();
   }
 
@@ -75,7 +75,7 @@ class _ParticipantScreenState extends State<ParticipantScreen> {
                       Text("Status: ${p.participantStatus?.label ?? 'N/A'}"),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => _deleteParticipant(p.bibNumber),
+                    onPressed: () => _deleteParticipant(p.bibNumber, p.raceId),
                   ),
                 );
               },

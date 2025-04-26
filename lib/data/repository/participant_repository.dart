@@ -5,6 +5,7 @@ abstract class ParticipantRepository {
   Future<List<Participant>> getAllParticipants();
   Future<List<Participant>> searchParticipantByRaceId(String raceId);
   Future<void> updateParticipant(Participant participant);
-  Future<void> deleteParticipant(int bibNumber);
-  Future<Participant?> getParticipantByBibNumber(int bibNumber);
+  Future<void> deleteParticipant(int bibNumber, String raceId);
+  Future<bool> checkBibNumberExists(
+      {required String raceId, required int bibNumber});
 }
