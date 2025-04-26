@@ -9,6 +9,7 @@ import 'package:race_tracker_project/screens/manager_screen/dialogs/participant_
 import 'package:race_tracker_project/screens/manager_screen/widgets/participant_tile.dart';
 import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:race_tracker_project/screens/time_tracker_screen/segment_selection_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
 import 'package:race_tracker_project/widgets/navigation_bar.dart';
@@ -149,7 +150,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(width: 12),
                       Button(
                         onPressed: () {
-                          // Export Data logic
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SegmentSelectionScreen(),
+                            ),
+                          );
                         },
                         type: ButtonType.secondary,
                         text: 'Tracker',
