@@ -42,8 +42,8 @@ class ParticipantTile extends StatelessWidget {
           const SizedBox(width: 10),
           IconButton(
             icon: Icon(
-              Icons.edit_outlined, // Use the OUTLINED version
-              color: RaceColors.primary, // Your purple color
+              Icons.edit_square,
+              color: RaceColors.primary,
             ),
             onPressed: onEdit,
             iconSize: 20,
@@ -51,8 +51,8 @@ class ParticipantTile extends StatelessWidget {
           const SizedBox(width: 2),
           IconButton(
             icon: Icon(
-              Icons.delete_outline, // Use the OUTLINED version
-              color: Colors.red, // Red color for delete
+              Icons.delete_outline,
+              color: Colors.red,
             ),
             onPressed: onDelete,
             iconSize: 20,
