@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:race_tracker_project/screens/time_tracker_screen/track_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
 
@@ -48,9 +49,17 @@ class SegmentSelectionScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Button(
-                onPressed: () {},
-                type: ButtonType.disabled,
-                text: 'Share',
+                onPressed: () {
+                  // Navigate to TrackScreen when pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TrackScreen(),
+                    ),
+                  );
+                },
+                type: ButtonType.primary,
+                text: 'Swimming',
                 width: 200,
                 height: 50,
               ),
@@ -58,7 +67,7 @@ class SegmentSelectionScreen extends StatelessWidget {
               Button(
                 onPressed: () {},
                 type: ButtonType.disabled,
-                text: 'Share',
+                text: 'Running',
                 width: 200,
                 height: 50,
               ),
@@ -66,7 +75,7 @@ class SegmentSelectionScreen extends StatelessWidget {
               Button(
                 onPressed: () {},
                 type: ButtonType.disabled,
-                text: 'Share',
+                text: 'Cycling',
                 width: 200,
                 height: 50,
               ),

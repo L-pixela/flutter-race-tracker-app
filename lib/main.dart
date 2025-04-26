@@ -7,6 +7,7 @@ import 'package:race_tracker_project/firebase_options.dart';
 import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/time_tracker_screen/segment_selection_screen.dart';
+import 'package:race_tracker_project/screens/time_tracker_screen/track_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
 void main() async {
