@@ -36,12 +36,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (gender != null) {
       final newParticipant = await showDialog<Participant>(
         context: context,
-        builder: (_) => ParticipantFormDialog(gender: gender),
+        builder: (_) => ParticipantFormDialog(
+          gender: gender,
+          participant: null,
+        ),
       );
 
       if (newParticipant != null) {
         context.read<ParticipantProvider>().addParticipant(newParticipant);
       }
+    }
+  }
+
+  void handleDeleteParticipant(Participant participant) async {
+    final confirm = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("Delete Participant"),
+              content:
+                  Text("Are you sure you want to delete ${participant.name}?"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, false),
+                  child: Text("Cancel"),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, true),
+                  child: Text("Delete", style: TextStyle(color: Colors.red)),
+                ),
+              ],
+            ));
+
+    if (confirm == true) {
+      context
+          .read<ParticipantProvider>()
+          .deleteParticipant(participant.bibNumber);
+    }
+  }
+
+  void handleEditParticipant(Participant participant) async {
+    final updateParticipant = await showDialog<Participant>(
+        context: context,
+        builder: (ctx) => ParticipantFormDialog(
+              gender: participant.gender,
+              participant: participant,
+            ));
+
+    if (updateParticipant != null) {
+      context.read<ParticipantProvider>().updateParticipant(participant);
     }
   }
 
@@ -191,10 +233,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return ListView.builder(
           itemCount: filtered.length,
           itemBuilder: (ctx, index) => ParticipantTile(
-            onTap: () {},
             participant: filtered[index],
-            onEdit: () {},
-            onDelete: () {},
+            onEdit: () => handleEditParticipant(filtered[index]),
+            onDelete: () => handleDeleteParticipant(filtered[index]),
           ),
         );
     }

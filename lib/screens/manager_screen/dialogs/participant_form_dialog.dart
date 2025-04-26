@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:race_tracker_project/data/firebase/firebase_race_repository.dart';
 import 'package:race_tracker_project/model/participant/participant.dart';
@@ -8,8 +10,10 @@ import 'package:race_tracker_project/widgets/app_button.dart';
 
 class ParticipantFormDialog extends StatefulWidget {
   final String gender;
+  final Participant? participant;
 
-  const ParticipantFormDialog({super.key, required this.gender});
+  const ParticipantFormDialog(
+      {super.key, required this.gender, required this.participant});
 
   @override
   _ParticipantFormDialogState createState() => _ParticipantFormDialogState();
@@ -23,16 +27,22 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
   final _formKey = GlobalKey<FormState>();
   late int bibNumber;
   late String name;
+  late String raceId;
 
   @override
   void initState() {
     super.initState();
     _loadRaces();
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
+    if (widget.participant != null) {
+      raceId = widget.participant!.raceId;
+      bibNumber = widget.participant!.bibNumber;
+      name = widget.participant!.name;
+    } else {
+      bibNumber = 0;
+      name = '';
+      raceId = '';
+    }
   }
 
   // ----------------------------------
@@ -43,7 +53,7 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
       _formKey.currentState!.save();
 
       final newParticipant = Participant(
-          raceId: _selectedRace!.raceId,
+          raceId: raceId,
           bibNumber: bibNumber,
           name: name,
           gender: widget.gender);
@@ -60,6 +70,17 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
     final races = await _raceRepo.getAllRaces();
     setState(() {
       _races = races;
+      if (widget.participant != null) {
+        // Select the race matching the participant
+        _selectedRace = races.firstWhere(
+          (race) => race.raceId == widget.participant!.raceId,
+          orElse: () => races.first,
+        );
+      } else if (races.isNotEmpty) {
+        // Default to first race for new participant
+        _selectedRace = races.first;
+        raceId = _selectedRace!.raceId;
+      }
     });
   }
 
@@ -90,6 +111,8 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.participant != null;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -111,6 +134,7 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
           child: Column(
             children: [
               TextFormField(
+                initialValue: isEditing ? bibNumber.toString() : null,
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   labelText: 'Bib Number',
@@ -121,9 +145,11 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                 keyboardType: TextInputType.number,
                 validator: _validateBib,
                 onSaved: (value) => bibNumber = int.parse(value!),
+                enabled: !isEditing,
               ),
               const SizedBox(height: 16),
               TextFormField(
+                initialValue: isEditing ? name : null,
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   labelText: 'Participant Name',
@@ -151,6 +177,7 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                 }).toList(),
                 onChanged: (race) => setState(() => _selectedRace = race),
                 validator: _validateRace,
+                onSaved: (value) => raceId = value!.raceId,
               ),
               const SizedBox(height: 24),
               Row(
@@ -158,11 +185,23 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                 children: [
                   Button(
                     onPressed: onSubmit,
-                    text: 'Register',
+                    text: isEditing ? 'Update' : 'Register',
                   ),
                   const SizedBox(width: 12),
                   Button(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (isEditing) {
+                        Navigator.pop(context);
+                      } else {
+                        _formKey.currentState?.reset();
+                        setState(() {
+                          bibNumber = 0;
+                          name = '';
+                          _selectedRace =
+                              _races.isNotEmpty ? _races.first : null;
+                        });
+                      }
+                    },
                     text: 'Cancel',
                     type: ButtonType.secondary,
                   ),

@@ -37,6 +37,29 @@ class Participant {
   bool get isFinished => participantStatus == ParticipantStatus.finished;
 
   @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Participant &&
+        other.bibNumber == bibNumber &&
+        other.name == name &&
+        other.gender == gender &&
+        other.raceId == raceId &&
+        other.participantStatus == participantStatus &&
+        other.startDate == startDate &&
+        other.finishDate == finishDate;
+  }
+
+  @override
+  int get hashCode =>
+      bibNumber.hashCode ^
+      name.hashCode ^
+      gender.hashCode ^
+      raceId.hashCode ^
+      participantStatus.hashCode ^
+      startDate.hashCode ^
+      finishDate.hashCode;
+
+  @override
   String toString() {
     return " Participant: {Bib: $bibNumber, Name: $name, Gender: $gender, Status: $participantStatus}";
   }

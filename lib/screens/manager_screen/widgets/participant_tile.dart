@@ -4,12 +4,10 @@ import 'package:race_tracker_project/theme/theme.dart';
 
 class ParticipantTile extends StatelessWidget {
   final Participant participant;
-  final VoidCallback onTap;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   const ParticipantTile(
       {super.key,
-      required this.onTap,
       required this.participant,
       required this.onEdit,
       required this.onDelete});
@@ -26,7 +24,6 @@ class ParticipantTile extends StatelessWidget {
         //     borderRadius: BorderRadius.circular(RaceSpacings.radius),
         //     side: BorderSide(color: RaceColors.primary, width: 1)),
         child: ListTile(
-      onTap: onTap,
       title: Text(title, style: RaceTextStyles.body),
       subtitle: Text(
         subTitle,

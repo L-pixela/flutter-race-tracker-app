@@ -50,4 +50,34 @@ class ParticipantProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteParticipant(int bibNumber) async {
+    try {
+      // 1. Delete from repository
+      await repository.deleteParticipant(bibNumber);
+
+      // 2. Refresh the list after deletion
+      await fetchParticipants();
+
+      // 3. Handle the error
+    } catch (e) {
+      participant = AsyncValue.error(e);
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> updateParticipant(Participant participantToUpdate) async {
+    try {
+      // 1. Update Participant in repository
+      await repository.updateParticipant(participantToUpdate);
+
+      // 2. Refresh the list after update
+      await fetchParticipants();
+    } catch (e) {
+      participant = AsyncValue.error(e);
+    }
+
+    notifyListeners();
+  }
 }
