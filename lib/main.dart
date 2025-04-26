@@ -6,6 +6,7 @@ import 'package:race_tracker_project/data/repository/participant_repository.dart
 import 'package:race_tracker_project/firebase_options.dart';
 import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:race_tracker_project/screens/time_tracker_screen/segment_selection_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
 void main() async {
@@ -35,16 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: raceAppTheme,
-      home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: RaceColors.primary,
-            title: Text(
-              "Cookies",
-              style: RaceTextStyles.darkHeading,
-            ),
-            centerTitle: true,
-          ),
-          body: DashboardScreen()),
+      home: Scaffold(body: SegmentSelectionScreen()),
 
       // RegisterForm(selectedGender: '',)
 
