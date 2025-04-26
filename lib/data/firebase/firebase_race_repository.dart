@@ -13,7 +13,7 @@ class FirebaseRaceRepository implements RaceRepository {
     try {
       final raceJson = RaceDto.toJson(race);
       await _firestore.collection(_collection).doc(race.raceId).set(raceJson);
-      print(" Race created successfully");
+      // print(" Race created successfully");
     } catch (e) {
       throw Exception('Failed to create race: $e');
     }
@@ -24,7 +24,7 @@ class FirebaseRaceRepository implements RaceRepository {
   Future<void> deleteRace(String raceId) async {
     try {
       await _firestore.collection(_collection).doc(raceId).delete();
-      print("Race deleted successfully");
+      // print("Race deleted successfully");
     } catch (e) {
       throw Exception('Failed to delete race: $e');
     }
@@ -35,7 +35,7 @@ class FirebaseRaceRepository implements RaceRepository {
   Future<List<Race>> getAllRaces() async {
     try {
       final snapshot = await _firestore.collection(_collection).get();
-      print("Race Fetched successfully");
+      // print("Race Fetched successfully");
       return snapshot.docs.map((doc) => RaceDto.fromJson(doc.data())).toList();
     } catch (e) {
       throw Exception('Failed to fetch races: $e');
@@ -47,7 +47,7 @@ class FirebaseRaceRepository implements RaceRepository {
     try {
       final doc = await _firestore.collection(_collection).doc(raceId).get();
       if (doc.exists) {
-        print("Race Fetched successfully");
+        // print("Race Fetched successfully");
         // Convert the document data
         return RaceDto.fromJson(doc.data()!);
       }
@@ -62,7 +62,7 @@ class FirebaseRaceRepository implements RaceRepository {
     try {
       final raceJson = RaceDto.toJson(race);
       await _firestore.collection(_collection).doc(race.raceId).set(raceJson);
-      print("Race updated successfully");
+      // print("Race updated successfully");
     } catch (e) {
       throw Exception('Failed to update race: $e');
     }

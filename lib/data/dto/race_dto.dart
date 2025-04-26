@@ -7,7 +7,8 @@ class RaceDto {
       'raceId': model.raceId,
       'raceEvent': model.raceEvent,
       'location': LocationDto.toJson(model.location),
-      'date': model.date.toIso8601String(),
+      'startDate': model.startDate!.toIso8601String(),
+      'endDate': model.endDate!.toIso8601String(),
       'raceStatus': model.raceStatus.label
     };
   }
@@ -18,7 +19,8 @@ class RaceDto {
         raceEvent: json['raceEvent'],
         raceStatus: statusFromString(json['raceStatus']),
         location: LocationDto.fromJson(json['location']),
-        date: DateTime.parse(json['date']));
+        startDate: DateTime.parse(json['startDate']),
+        endDate: DateTime.parse(json['endDate']));
   }
 
   static RaceStatus statusFromString(String value) {

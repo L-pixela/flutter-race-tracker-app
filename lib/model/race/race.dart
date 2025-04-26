@@ -21,14 +21,16 @@ class Race {
   final String raceEvent;
   final Location location;
   final RaceStatus raceStatus;
-  final DateTime date;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   const Race({
     required this.raceId,
     required this.raceEvent,
     required this.raceStatus,
     required this.location,
-    required this.date,
+    this.startDate,
+    this.endDate,
   });
 
   bool isOngoing() => raceStatus == RaceStatus.ongoing;
@@ -37,6 +39,6 @@ class Race {
 
   @override
   String toString() {
-    return "{Event: $raceEvent, Location: ${location.toString()}, Race Status: $raceStatus, Date: $date}";
+    return "{Event: $raceEvent, Location: ${location.toString()}, Race Status: $raceStatus, Start Date: $startDate, End Date: $endDate}";
   }
 }

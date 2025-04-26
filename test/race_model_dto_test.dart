@@ -11,7 +11,7 @@ void main() {
     raceEvent: 'Paris Marathon',
     location: testLocation,
     raceStatus: RaceStatus.ongoing,
-    date: DateTime(2024, 10, 1, 9, 0),
+    startDate: DateTime(2024, 10, 1, 9, 0),
   );
 
   group('RaceDto Tests', () {
@@ -22,7 +22,7 @@ void main() {
         'raceId': 'race_001',
         'raceEvent': 'Paris Marathon',
         'location': LocationDto.toJson(testLocation),
-        'date': '2024-10-01T09:00:00.000',
+        'startDate': '2024-10-01T09:00:00.000',
         'raceStatus': 'Ongoing',
       });
     });
@@ -32,7 +32,7 @@ void main() {
         'raceId': 'race_001',
         'raceEvent': 'Paris Marathon',
         'location': LocationDto.toJson(testLocation),
-        'date': '2024-10-01T09:00:00.000',
+        'startDate': '2024-10-01T09:00:00.000',
         'raceStatus': 'Ongoing',
       };
 
@@ -42,7 +42,7 @@ void main() {
       expect(result.raceEvent, testRace.raceEvent);
       expect(result.location.name, testRace.location.name);
       expect(result.location.region, testRace.location.region);
-      expect(result.date, testRace.date);
+      expect(result.startDate, testRace.startDate);
       expect(result.raceStatus, testRace.raceStatus);
     });
 
