@@ -81,6 +81,13 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
     return null;
   }
 
+  String? _validateRace(Race? value) {
+    if (value == null) {
+      return 'Please select a race';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,9 +134,15 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                 validator: _validateName,
                 onSaved: (value) => name = value!.trim(),
               ),
+              const SizedBox(height: 16),
               DropdownButtonFormField<Race>(
                 value: _selectedRace,
-                decoration: const InputDecoration(labelText: 'Select Race'),
+                decoration: InputDecoration(
+                  labelText: 'Select Race',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
                 items: _races.map((race) {
                   return DropdownMenuItem(
                     value: race,
@@ -137,6 +150,7 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                   );
                 }).toList(),
                 onChanged: (race) => setState(() => _selectedRace = race),
+                validator: _validateRace,
               ),
               const SizedBox(height: 24),
               Row(

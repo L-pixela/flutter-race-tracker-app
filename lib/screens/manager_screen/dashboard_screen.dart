@@ -11,13 +11,21 @@ import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
+import 'package:race_tracker_project/widgets/navigation_bar.dart';
 
 ///
 /// This is the Dashboard Screen for Race Manager to see the participants
 /// While also Having CRUD Participants
 ///
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  String _searchQuery = '';
 
   void handleAddParticipant(BuildContext context) async {
     final gender = await showDialog<String>(
@@ -27,8 +35,9 @@ class DashboardScreen extends StatelessWidget {
 
     if (gender != null) {
       final newParticipant = await showDialog<Participant>(
-          context: context,
-          builder: (_) => ParticipantFormDialog(gender: gender));
+        context: context,
+        builder: (_) => ParticipantFormDialog(gender: gender),
+      );
 
       if (newParticipant != null) {
         context.read<ParticipantProvider>().addParticipant(newParticipant);
@@ -41,6 +50,7 @@ class DashboardScreen extends StatelessWidget {
     final participantProvider = context.watch<ParticipantProvider>();
 
     return Scaffold(
+      bottomNavigationBar: Navigation_Bar(),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(120),
         child: AppBar(
@@ -49,17 +59,63 @@ class DashboardScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 12.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Home',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Home',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 36,
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                _searchQuery = value.trim().toLowerCase();
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Search...',
+                              hintStyle: TextStyle(color: Colors.white70),
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.white),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.2),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 0,
+                                horizontal: 10,
+                              ),
+                            ),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Button(
+                        onPressed: () {
+                          // Export Data logic
+                        },
+                        type: ButtonType.secondary,
+                        text: 'Tracker',
+                        icon: Icons.timer,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -72,36 +128,30 @@ class DashboardScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Left side buttons
                 Row(
                   children: [
                     Button(
-                      onPressed: () {
-                        // View Participants logic
-                      },
+                      onPressed: () {},
                       type: ButtonType.secondary,
                       text: 'Share',
                       icon: Icons.share_sharp,
                     ),
                     const SizedBox(width: 8),
                     Button(
-                      onPressed: () {
-                        // Export Data logic
-                      },
+                      onPressed: () {},
                       type: ButtonType.secondary,
                       text: 'Print',
                       icon: Icons.print,
                     ),
                   ],
                 ),
-                // Right side button
                 Button(
                   onPressed: () => handleAddParticipant(context),
                   text: 'Add Participant',
                 ),
               ],
             ),
-            const SizedBox(height: 16), // spacing between row and list
+            const SizedBox(height: 16),
             Expanded(
               child: _buildParticipantListView(participantProvider, context),
             ),
@@ -117,24 +167,36 @@ class DashboardScreen extends StatelessWidget {
 
     switch (participantValue.state) {
       case AsyncValueState.loading:
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       case AsyncValueState.error:
         return Text('Error: ${participantValue.error}');
       case AsyncValueState.success:
-        if (participantValue.data == null || participantValue.data!.isEmpty) {
-          return Center(
-            child: Text("No Participant Registered Yet!"),
-          );
+        final data = participantValue.data;
+        if (data == null || data.isEmpty) {
+          return const Center(child: Text("No Participant Registered Yet!"));
+        }
+
+        // Filter and sort participants
+        final filtered = data
+            .where((p) =>
+                p.name.toLowerCase().contains(_searchQuery) ||
+                p.bibNumber.toString().contains(_searchQuery))
+            .toList()
+          ..sort((a, b) => a.bibNumber.compareTo(b.bibNumber));
+
+        if (filtered.isEmpty) {
+          return const Center(child: Text("No Participants Match Search"));
         }
 
         return ListView.builder(
-            shrinkWrap: true,
-            physics: AlwaysScrollableScrollPhysics(),
-            itemCount: participantValue.data!.length,
-            itemBuilder: (ctx, index) => ParticipantTile(
-                onTap: () {}, participant: participantValue.data![index]));
+          itemCount: filtered.length,
+          itemBuilder: (ctx, index) => ParticipantTile(
+            onTap: () {},
+            participant: filtered[index],
+            onEdit: () {},
+            onDelete: () {},
+          ),
+        );
     }
   }
 }
