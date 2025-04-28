@@ -10,6 +10,7 @@ import 'package:race_tracker_project/firebase_options.dart';
 import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/provider/race_provider.dart';
+import 'package:race_tracker_project/screens/provider/stopwatch_provider.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
 void main() async {
@@ -28,7 +29,8 @@ void main() async {
           create: (context) =>
               ParticipantProvider(repository: participantRepository)),
       ChangeNotifierProvider(
-          create: (context) => RaceProvider(repository: raceRepository))
+          create: (context) => RaceProvider(repository: raceRepository)),
+      ChangeNotifierProvider(create: (context) => StopwatchProvider()),
     ],
     child: MyApp(),
   ));

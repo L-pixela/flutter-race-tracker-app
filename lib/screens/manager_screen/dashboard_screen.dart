@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:race_tracker_project/model/participant/participant.dart';
 import 'package:race_tracker_project/screens/manager_screen/dialogs/gender_selection_dialog.dart';
 import 'package:race_tracker_project/screens/manager_screen/dialogs/participant_form_dialog.dart';
+import 'package:race_tracker_project/screens/manager_screen/race_screen.dart';
 import 'package:race_tracker_project/screens/manager_screen/widgets/participant_tile.dart';
 import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
@@ -93,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final participantProvider = context.watch<ParticipantProvider>();
 
     return Scaffold(
-      bottomNavigationBar: Navigation_Bar(),
+ bottomNavigationBar: Navigation_Bar(initialIndex: 0),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(120),
         child: AppBar(
@@ -203,6 +204,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: _buildParticipantListView(participantProvider, context),
             ),
+            
           ],
         ),
       ),
