@@ -5,14 +5,14 @@ import 'package:race_tracker_project/model/race_segment/race_segment.dart';
 class MockCheckpointRepository implements CheckpointRepository {
   final List<Checkpoint> _checkpoints = [
     Checkpoint(
-      id: 1,
+      id: "1",
       bibNumber: 1001,
       raceId: 'r1',
       segment: RaceSegment.swimming,
       timeStamp: DateTime.now().add(Duration(minutes: 30)),
     ),
     Checkpoint(
-      id: 2,
+      id: "2",
       bibNumber: 1003,
       raceId: 'r1',
       segment: RaceSegment.cycling,
@@ -33,5 +33,20 @@ class MockCheckpointRepository implements CheckpointRepository {
   @override
   Future<List<Checkpoint>> getCheckpointsByParticipant(int bibNumber) async {
     return _checkpoints.where((c) => c.bibNumber == bibNumber).toList();
+  }
+
+  @override
+  Future<void> deleteCheckpoint(String id) async {
+    _checkpoints.removeWhere((c) => c.id == id);
+  }
+
+  @override
+  Future<void> updateCheckpoint(Checkpoint newCheckpoint) async {
+    final index = _checkpoints.indexWhere((c) => c.id == newCheckpoint.id);
+    if (index != -1) {
+      _checkpoints[index] = newCheckpoint;
+    } else {
+      throw Exception("Checkpoint with id ${newCheckpoint.id} not found");
+    }
   }
 }

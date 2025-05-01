@@ -40,7 +40,7 @@ class TimeTrackerServices extends ChangeNotifier {
     }
 
     final checkpoint = Checkpoint(
-      id: DateTime.now().millisecondsSinceEpoch, // Simple unique id
+      id: DateTime.now().millisecondsSinceEpoch.toString(), // Simple unique id
       raceId: _activeRaceId!,
       bibNumber: bibNumber,
       segment: _selectedSegment!,
