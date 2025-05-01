@@ -9,20 +9,18 @@ class Navigation_Bar extends StatefulWidget {
 
 class _Navigation_BarState extends State<Navigation_Bar> {
   int _selectedIndex = 0;
- 
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    
-   final List<Widget> _screens = [
-    DashboardScreen(),
-    // RaceScreen(),
-    // RankScreen(),
-    // AccountScreen(),
-  ];
 
+    final List<Widget> _screens = [
+      DashboardScreen(),
+      // RaceScreen(),
+      // RankScreen(),
+      // AccountScreen(),
+    ];
   }
 
   @override
