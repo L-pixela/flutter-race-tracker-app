@@ -6,9 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:race_tracker_project/model/participant/participant.dart';
 import 'package:race_tracker_project/screens/manager_screen/dialogs/gender_selection_dialog.dart';
 import 'package:race_tracker_project/screens/manager_screen/dialogs/participant_form_dialog.dart';
+import 'package:race_tracker_project/screens/manager_screen/race_screen.dart';
 import 'package:race_tracker_project/screens/manager_screen/widgets/participant_tile.dart';
 import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:race_tracker_project/screens/time_tracker_screen/segment_selection_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
 import 'package:race_tracker_project/widgets/navigation_bar.dart';
@@ -92,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final participantProvider = context.watch<ParticipantProvider>();
 
     return Scaffold(
-      bottomNavigationBar: Navigation_Bar(),
+ bottomNavigationBar: Navigation_Bar(initialIndex: 0),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(120),
         child: AppBar(
@@ -149,7 +151,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(width: 12),
                       Button(
                         onPressed: () {
-                          // Export Data logic
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SegmentSelectionScreen(),
+                            ),
+                          );
                         },
                         type: ButtonType.secondary,
                         text: 'Tracker',
@@ -197,6 +204,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: _buildParticipantListView(participantProvider, context),
             ),
+            
           ],
         ),
       ),

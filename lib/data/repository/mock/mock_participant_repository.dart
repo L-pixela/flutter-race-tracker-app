@@ -58,10 +58,6 @@ class MockParticipantRepository implements ParticipantRepository {
   }
 
   @override
-  Future<Participant?> getParticipantByBibNumber(int bibNumber) async =>
-      _participants[bibNumber];
-
-  @override
   Future<bool> checkBibNumberExists(
       {required String raceId, required int bibNumber}) {
     // TODO: implement checkBibNumberExists

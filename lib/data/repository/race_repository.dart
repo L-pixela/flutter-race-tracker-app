@@ -6,4 +6,5 @@ abstract class RaceRepository {
   Future<Race?> getRaceById(String raceId);
   Future<void> updateRace(Race race);
   Future<void> deleteRace(String raceId);
+  Future<bool> checkRaceExists(String raceId);
 }

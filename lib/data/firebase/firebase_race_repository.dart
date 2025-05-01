@@ -67,4 +67,20 @@ class FirebaseRaceRepository implements RaceRepository {
       throw Exception('Failed to update race: $e');
     }
   }
+
+  @override
+  Future<bool> checkRaceExists(String raceId) async {
+    try {
+      final snapshot = await _firestore
+          .collection(_collection)
+          .where('raceId', isEqualTo: raceId)
+          .get();
+
+      final exists = snapshot.docs.isNotEmpty;
+
+      return exists;
+    } catch (e) {
+      throw Exception('Failed to check races: $e');
+    }
+  }
 }

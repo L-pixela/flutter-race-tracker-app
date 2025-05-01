@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:race_tracker_project/data/firebase/firebase_race_repository.dart';
+
 import 'package:race_tracker_project/model/participant/participant.dart';
 import 'package:race_tracker_project/model/race/race.dart';
+import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:race_tracker_project/screens/provider/race_provider.dart';
 
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
@@ -22,8 +24,6 @@ class ParticipantFormDialog extends StatefulWidget {
 }
 
 class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
-  final _raceRepo = FirebaseRaceRepository();
-  List<Race> _races = [];
   Race? _selectedRace;
 
   final _formKey = GlobalKey<FormState>();
@@ -34,7 +34,6 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
   @override
   void initState() {
     super.initState();
-    _loadRaces();
 
     if (widget.participant != null) {
       raceId = widget.participant!.raceId;
@@ -44,6 +43,31 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
       bibNumber = 0;
       name = '';
       raceId = '';
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeSelectedRace();
+  }
+
+  void _initializeSelectedRace() {
+    final raceState = context.watch<RaceProvider>().races;
+
+    if (_selectedRace == null &&
+        widget.participant != null &&
+        raceState.state == AsyncValueState.success &&
+        raceState.data != null &&
+        raceState.data!.isNotEmpty) {
+      final allRaces = raceState.data!;
+      _selectedRace = allRaces.firstWhere(
+        (race) => race.raceId == widget.participant!.raceId,
+        orElse: () => allRaces.first,
+      );
+      raceId = _selectedRace!.raceId;
+      setState(
+          () {}); // <- Important! Force widget to rebuild with new _selectedRace
     }
   }
 
@@ -88,24 +112,6 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
     Navigator.pop(context, newParticipant);
   }
 
-  Future<void> _loadRaces() async {
-    final races = await _raceRepo.getAllRaces();
-    setState(() {
-      _races = races;
-      if (widget.participant != null) {
-        // Select the race matching the participant
-        _selectedRace = races.firstWhere(
-          (race) => race.raceId == widget.participant!.raceId,
-          orElse: () => races.first,
-        );
-      } else if (races.isNotEmpty) {
-        // Default to first race for new participant
-        _selectedRace = races.first;
-        raceId = _selectedRace!.raceId;
-      }
-    });
-  }
-
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your name';
@@ -133,7 +139,18 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final raceProvider = context.watch<RaceProvider>();
+    final raceState = raceProvider.races;
     final isEditing = widget.participant != null;
+
+    if (raceState == AsyncValue.loading()) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final availableRaces = raceState.data ?? [];
+
+    if (_selectedRace == null && availableRaces.isNotEmpty) {
+      _selectedRace = availableRaces.first;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -191,7 +208,7 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                items: _races.map((race) {
+                items: availableRaces.map((race) {
                   return DropdownMenuItem(
                     value: race,
                     child: Text('${race.raceEvent} - ${race.location.name}'),
@@ -219,8 +236,9 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
                         setState(() {
                           bibNumber = 0;
                           name = '';
-                          _selectedRace =
-                              _races.isNotEmpty ? _races.first : null;
+                          _selectedRace = raceState.data!.isNotEmpty
+                              ? raceState.data!.first
+                              : null;
                         });
                       }
                     },

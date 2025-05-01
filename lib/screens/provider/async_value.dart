@@ -14,4 +14,8 @@ class AsyncValue<T> {
 
   factory AsyncValue.error(Object error) =>
       AsyncValue._(error: error, state: AsyncValueState.error);
+
+  bool get isLoading => state == AsyncValueState.loading;
+  bool get isSuccess => state == AsyncValueState.success;
+  bool get isError => state == AsyncValueState.error;
 }

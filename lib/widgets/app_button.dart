@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
-enum ButtonType { primary, secondary }
+enum ButtonType { primary, secondary, disabled }
 
 class Button extends StatelessWidget {
   final String text;
@@ -23,34 +23,36 @@ class Button extends StatelessWidget {
     this.height,
   });
 
+  bool get isPrimary => type == ButtonType.primary;
+  bool get isSecondary => type == ButtonType.secondary;
+  bool get isDisabled => type == ButtonType.disabled;
+
   @override
   Widget build(BuildContext context) {
-    final isPrimary = type == ButtonType.primary;
+    final Color backgroundColor = isPrimary
+        ? RaceColors.primary
+        : isSecondary
+            ? RaceColors.white
+            : RaceColors.lightGrey.withOpacity(0.5);
 
-    final Color backgroundColor =
-        isPrimary ? RaceColors.primary : RaceColors.white;
-    final Color borderColor =
-        isPrimary ? Colors.transparent : RaceColors.lightGrey;
-    final Color textColor = isPrimary ? RaceColors.white : RaceColors.primary;
-    final Color iconColor = textColor;
+    final Color borderColor = isPrimary
+        ? Colors.transparent
+        : isSecondary
+            ? RaceColors.lightGrey
+            : Colors.transparent;
 
-    final BorderSide border = BorderSide(color: borderColor, width: 2);
+    final Color textColor = isPrimary
+        ? RaceColors.white
+        : isSecondary
+            ? RaceColors.primary
+            : RaceColors.disabled;
 
-    List<Widget> children = [];
-
-    if (icon != null) {
-      children.add(Icon(icon, size: 20, color: iconColor));
-    }
-
-    children.add(
-      Text(
-        text,
-        style: RaceTextStyles.button.copyWith(color: textColor),
-      ),
-    );
+    final BorderSide border =
+        BorderSide(color: borderColor, width: isSecondary ? 2 : 0);
 
     return SizedBox(
       width: fullWidth ? double.infinity : width,
+      height: height,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           backgroundColor: backgroundColor,
@@ -60,11 +62,20 @@ class Button extends StatelessWidget {
           ),
           side: border,
         ),
-        onPressed: onPressed,
+        onPressed: isDisabled ? null : onPressed, // <- DISABLE the button
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: children,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 20, color: textColor),
+              const SizedBox(width: 8),
+            ],
+            Text(
+              text,
+              style: RaceTextStyles.button.copyWith(color: textColor),
+            ),
+          ],
         ),
       ),
     );

@@ -40,4 +40,10 @@ class MockRaceRepository implements RaceRepository {
   Future<void> deleteRace(String raceId) async {
     _races.remove(raceId);
   }
+
+  @override
+  Future<bool> checkRaceExists(String raceId) {
+    // TODO: implement checkRaceExists
+    throw UnimplementedError();
+  }
 }
