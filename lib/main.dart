@@ -8,10 +8,12 @@ import 'package:race_tracker_project/data/repository/participant_repository.dart
 import 'package:race_tracker_project/data/repository/race_repository.dart';
 import 'package:race_tracker_project/firebase_options.dart';
 import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
+import 'package:race_tracker_project/screens/manager_screen/race_screen.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/provider/race_provider.dart';
 import 'package:race_tracker_project/screens/provider/stopwatch_provider.dart';
 import 'package:race_tracker_project/theme/theme.dart';
+import 'package:race_tracker_project/widgets/race_buttom_navigation.dart';
 
 void main() async {
   // 1. Initialize Firebase
@@ -36,15 +38,44 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = const [
+    DashboardScreen(),
+    RaceScreen(),
+    Placeholder(), // TODO for Rank Screen
+    Placeholder(), // TODO for Settings Screen
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: raceAppTheme,
-      home: Scaffold(body: DashboardScreen()),
+      home: Scaffold(
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,
+        ),
+        bottomNavigationBar: RaceButtomNavigation(
+          selectedIndex: _selectedIndex,
+          onItemTapped: _onItemTapped,
+        ),
+      ),
     );
   }
 }
