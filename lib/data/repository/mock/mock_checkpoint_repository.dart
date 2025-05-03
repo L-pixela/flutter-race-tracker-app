@@ -49,4 +49,9 @@ class MockCheckpointRepository implements CheckpointRepository {
       throw Exception("Checkpoint with id ${newCheckpoint.id} not found");
     }
   }
+
+  @override
+  Future<List<Checkpoint>> fetchAllCheckpoints() async {
+    return _checkpoints;
+  }
 }

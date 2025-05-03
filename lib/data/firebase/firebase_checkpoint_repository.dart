@@ -76,4 +76,17 @@ class FirebaseCheckpointRepository implements CheckpointRepository {
       throw Exception("Failed to update checkpoint: $e");
     }
   }
+
+  @override
+  Future<List<Checkpoint>> fetchAllCheckpoints() async {
+    try {
+      return await _firestore.collection(_collection).get().then((snapshot) {
+        return snapshot.docs
+            .map((doc) => CheckpointDto.fromJson(doc.data()))
+            .toList();
+      });
+    } catch (e) {
+      throw Exception("Failed to fetch all checkpoint: $e");
+    }
+  }
 }
