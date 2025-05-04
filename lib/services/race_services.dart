@@ -14,7 +14,7 @@ class RaceServices {
       raceEvent: race.raceEvent,
       location: race.location,
       raceStatus: RaceStatus.ongoing,
-      startDate: DateTime.now(),
+      startDate: race.startDate ?? DateTime.now(),
       endDate: null,
     );
 
@@ -32,6 +32,18 @@ class RaceServices {
       startDate: race.startDate,
       endDate: DateTime.now(),
     );
+
+    await raceProvider.updateRace(updatedRace);
+  }
+
+  Future<void> resetRace(Race race) async {
+    final updatedRace = Race(
+        raceId: race.raceId,
+        raceEvent: race.raceEvent,
+        raceStatus: RaceStatus.upcoming,
+        location: race.location,
+        startDate: null,
+        endDate: null);
 
     await raceProvider.updateRace(updatedRace);
   }

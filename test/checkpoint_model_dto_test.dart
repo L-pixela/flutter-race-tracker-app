@@ -6,7 +6,7 @@ import 'package:race_tracker_project/data/dto/checkpoint_dto.dart';
 void main() {
   final testDateTime = DateTime(2025, 4, 20, 12, 0);
   final testCheckpoint = Checkpoint(
-    id: 1,
+    id: "1",
     raceId: 'race_001',
     bibNumber: 99,
     segment: RaceSegment.running,
@@ -18,7 +18,7 @@ void main() {
       final json = CheckpointDto.toJson(testCheckpoint);
 
       expect(json, {
-        'id': 1,
+        'id': "1",
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'Running',
@@ -28,7 +28,7 @@ void main() {
 
     test('should convert JSON to Checkpoint correctly', () {
       final json = {
-        'id': 1,
+        'id': "1",
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'Running',
@@ -45,7 +45,7 @@ void main() {
 
     test('should throw exception on invalid segment', () {
       final json = {
-        'id': 1,
+        'id': "1",
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'InvalidSegment',
