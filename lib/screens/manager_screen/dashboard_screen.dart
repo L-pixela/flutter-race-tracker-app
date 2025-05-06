@@ -83,7 +83,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ));
 
     if (updateParticipant != null) {
-      context.read<ParticipantProvider>().updateParticipant(participant);
+      context.read<ParticipantProvider>().updateParticipant(updateParticipant);
     }
   }
 
