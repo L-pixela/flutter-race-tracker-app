@@ -1,23 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:race_tracker_project/screens/time_tracker_screen/track_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'package:race_tracker_project/services/time_tracker_services.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const BibDetailScreen(bibNumber: 1),
-    );
-  }
-}
 
 ///////
 class BibDetailScreen extends StatelessWidget {
@@ -27,6 +13,7 @@ class BibDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeTrackerServices = context.read<TimeTrackerServices>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: RaceColors.primary,
@@ -58,12 +45,7 @@ class BibDetailScreen extends StatelessWidget {
                     height: 60,
                     text: 'Back',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TrackScreen(raceId: 'R1', segment: ),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                   const SizedBox(width: 10),
@@ -71,7 +53,9 @@ class BibDetailScreen extends StatelessWidget {
                     width: 90,
                     height: 60,
                     text: 'Reset',
-                    onPressed: () {},
+                    onPressed: () {
+                      timeTrackerServices.undoLastTap(bibNumber);
+                    },
                   ),
                 ],
               ),

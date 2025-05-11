@@ -19,8 +19,6 @@ class SegmentSelectionScreen extends StatelessWidget {
         return Colors.green;
       case RaceStatus.completed:
         return Colors.grey;
-      default:
-        return Colors.black;
     }
   }
 

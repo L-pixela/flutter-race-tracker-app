@@ -5,6 +5,7 @@ import 'package:race_tracker_project/model/race/race.dart';
 import 'package:race_tracker_project/model/race_segment/race_segment.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/provider/race_provider.dart';
+import 'package:race_tracker_project/screens/time_tracker_screen/bib_detail_screen.dart';
 import 'package:race_tracker_project/services/time_tracker_services.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
@@ -44,7 +45,7 @@ class _TrackScreenState extends State<TrackScreen> {
         );
       }
 
-      Color _getRaceStatusColor(Race race) {
+      Color getRaceStatusColor(Race race) {
         switch (race.raceStatus) {
           case RaceStatus.upcoming:
             return Colors.orange;
@@ -143,7 +144,7 @@ class _TrackScreenState extends State<TrackScreen> {
                                 ),
                                 visualDensity: VisualDensity.compact,
                                 padding: EdgeInsets.zero,
-                                backgroundColor: _getRaceStatusColor(race),
+                                backgroundColor: getRaceStatusColor(race),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                                 labelPadding:
@@ -181,6 +182,14 @@ class _TrackScreenState extends State<TrackScreen> {
                             trackerServices.onParticipantTap(bib);
                             setState(() {});
                           },
+                    onLongPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => BibDetailScreen(
+                                    bibNumber: participant.bibNumber,
+                                  )));
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: isDone ? Colors.grey : Colors.blue,
