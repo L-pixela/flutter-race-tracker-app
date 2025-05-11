@@ -9,14 +9,14 @@ class MockCheckpointRepository implements CheckpointRepository {
       bibNumber: 1001,
       raceId: 'r1',
       segment: RaceSegment.swimming,
-      timeStamp: DateTime.now().add(Duration(minutes: 30)),
+      startTime: DateTime.now().add(Duration(minutes: 30)),
     ),
     Checkpoint(
       id: "2",
       bibNumber: 1003,
       raceId: 'r1',
       segment: RaceSegment.cycling,
-      timeStamp: DateTime.now().subtract(Duration(hours: 1, minutes: 30)),
+      startTime: DateTime.now().subtract(Duration(hours: 1, minutes: 30)),
     ),
   ];
 

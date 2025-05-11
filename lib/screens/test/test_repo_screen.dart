@@ -99,7 +99,7 @@ class _TestMockRepoScreenState extends State<TestMockRepoScreen> {
                         .map((c) => ListTile(
                               title: Text(
                                   "${c.raceId} - ${c.bibNumber} - ${c.segment.label}"),
-                              subtitle: Text("Time: ${c.timeStamp}"),
+                              subtitle: Text("Time: ${c.startTime}"),
                             ))
                         .toList(),
                   );

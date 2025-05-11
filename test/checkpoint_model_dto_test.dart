@@ -10,7 +10,7 @@ void main() {
     raceId: 'race_001',
     bibNumber: 99,
     segment: RaceSegment.running,
-    timeStamp: testDateTime,
+    startTime: testDateTime,
   );
 
   group('CheckpointDto Tests', () {
@@ -22,7 +22,7 @@ void main() {
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'Running',
-        'timeStamp': testDateTime.toIso8601String(),
+        'startTime': testDateTime.toIso8601String(),
       });
     });
 
@@ -32,7 +32,7 @@ void main() {
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'Running',
-        'timeStamp': '2025-04-20T12:00:00.000',
+        'startTime': '2025-04-20T12:00:00.000',
       };
 
       final checkpoint = CheckpointDto.fromJson(json);
@@ -40,7 +40,7 @@ void main() {
       expect(checkpoint.raceId, testCheckpoint.raceId);
       expect(checkpoint.bibNumber, testCheckpoint.bibNumber);
       expect(checkpoint.segment, testCheckpoint.segment);
-      expect(checkpoint.timeStamp, testCheckpoint.timeStamp);
+      expect(checkpoint.startTime, testCheckpoint.startTime);
     });
 
     test('should throw exception on invalid segment', () {
@@ -49,7 +49,7 @@ void main() {
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'InvalidSegment',
-        'timeStamp': '2025-04-20T12:00:00.000',
+        'startTime': '2025-04-20T12:00:00.000',
       };
 
       expect(() => CheckpointDto.fromJson(json), throwsException);
