@@ -102,4 +102,12 @@ class ParticipantProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Participant? getParticipantByBib(int bibNumber) {
+    final list = participant.data;
+    if (list == null) return null;
+    return list.firstWhere(
+      (p) => p.bibNumber == bibNumber,
+    );
+  }
 }

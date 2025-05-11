@@ -114,12 +114,11 @@ class TestRaceScreen extends StatelessWidget {
         onPressed: () {
           // Simulate adding a new race
           final newRace = Race(
-              raceId: 'R2',
-              raceStatus: RaceStatus.upcoming,
-              raceEvent: 'Dorney Evening Triathlon',
-              location: Location(name: 'London', region: Region.europe),
-              startDate: DateTime.now(),
-              endDate: DateTime.now().add(Duration(days: 5)));
+            raceId: 'R1',
+            raceStatus: RaceStatus.upcoming,
+            raceEvent: 'Dorney Evening Triathlon',
+            location: Location(name: 'London', region: Region.europe),
+          );
           context.read<RaceProvider>().addRace(newRace);
         },
         child: const Icon(Icons.add),

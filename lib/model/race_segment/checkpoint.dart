@@ -7,7 +7,8 @@ class Checkpoint {
   final String id;
   final int bibNumber;
   final String raceId;
-  final DateTime timeStamp;
+  final DateTime? startTime;
+  final DateTime? endTime;
   final RaceSegment segment;
 
   const Checkpoint({
@@ -15,11 +16,12 @@ class Checkpoint {
     required this.raceId,
     required this.bibNumber,
     required this.segment,
-    required this.timeStamp,
+    this.startTime,
+    this.endTime,
   });
 
   @override
   String toString() {
-    return "Bib Number: $bibNumber,Race ID: $raceId,Segment: ${segment.label},Time: $timeStamp";
+    return "Bib Number: $bibNumber,Race ID: $raceId,Segment: ${segment.label},Time: $startTime - $endTime";
   }
 }

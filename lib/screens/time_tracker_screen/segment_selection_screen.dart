@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:race_tracker_project/model/race_segment/race_segment.dart';
 import 'package:race_tracker_project/screens/time_tracker_screen/track_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
@@ -54,28 +55,53 @@ class SegmentSelectionScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TrackScreen(),
+                      builder: (context) => TrackScreen(
+                        raceId: "R1",
+                        segment: RaceSegment.swimming,
+                      ),
                     ),
                   );
                 },
                 type: ButtonType.primary,
-                text: 'Swimming',
+                text: RaceSegment.swimming.label,
                 width: 200,
                 height: 50,
               ),
               SizedBox(height: 20),
               Button(
-                onPressed: () {},
-                type: ButtonType.disabled,
-                text: 'Running',
+                onPressed: () {
+                  // Navigate to TrackScreen when pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TrackScreen(
+                        raceId: "R1",
+                        segment: RaceSegment.cycling,
+                      ),
+                    ),
+                  );
+                },
+                type: ButtonType.primary,
+                text: RaceSegment.cycling.label,
                 width: 200,
                 height: 50,
               ),
               SizedBox(height: 20),
               Button(
-                onPressed: () {},
-                type: ButtonType.disabled,
-                text: 'Cycling',
+                onPressed: () {
+                  // Navigate to TrackScreen when pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TrackScreen(
+                        raceId: "R1",
+                        segment: RaceSegment.running,
+                      ),
+                    ),
+                  );
+                },
+                type: ButtonType.primary,
+                text: RaceSegment.running.label,
                 width: 200,
                 height: 50,
               ),
