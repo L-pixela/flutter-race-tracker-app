@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:race_tracker_project/model/race/race.dart';
 
 import 'package:race_tracker_project/model/race_segment/race_segment.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:race_tracker_project/screens/provider/race_provider.dart';
 import 'package:race_tracker_project/services/time_tracker_services.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
@@ -19,6 +21,8 @@ class _TrackScreenState extends State<TrackScreen> {
   late TimeTrackerServices trackerServices;
   late ParticipantProvider participantProvider;
 
+  List<int> selectedIndexes = [];
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +37,23 @@ class _TrackScreenState extends State<TrackScreen> {
   Widget build(BuildContext context) {
     return Consumer<ParticipantProvider>(builder: (context, provider, _) {
       final value = provider.participant;
+      final race = context.watch<RaceProvider>().races.data?.first;
+      if (race == null) {
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+
+      Color _getRaceStatusColor(Race race) {
+        switch (race.raceStatus) {
+          case RaceStatus.upcoming:
+            return Colors.orange;
+          case RaceStatus.ongoing:
+            return Colors.green;
+          case RaceStatus.completed:
+            return Colors.grey;
+        }
+      }
 
       if (value.isLoading) {
         return const Center(child: CircularProgressIndicator());
@@ -48,6 +69,12 @@ class _TrackScreenState extends State<TrackScreen> {
             preferredSize: const Size.fromHeight(190),
             child: AppBar(
               backgroundColor: RaceColors.primary,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               automaticallyImplyLeading: false,
               flexibleSpace: SafeArea(
                 child: Center(
@@ -94,11 +121,35 @@ class _TrackScreenState extends State<TrackScreen> {
                         const SizedBox(height: 15),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Status: In Progress',
-                            style: RaceTextStyles.body.copyWith(
-                              color: RaceColors.white,
-                            ),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Status: ",
+                                style: RaceTextStyles.body.copyWith(
+                                  color: RaceColors.white,
+                                ),
+                              ),
+                              Chip(
+                                label: Text(
+                                  race.raceStatus == RaceStatus.ongoing
+                                      ? 'In Progress'
+                                      : race.raceStatus == RaceStatus.upcoming
+                                          ? 'Upcoming'
+                                          : 'Completed',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                visualDensity: VisualDensity.compact,
+                                padding: EdgeInsets.zero,
+                                backgroundColor: _getRaceStatusColor(race),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                labelPadding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -128,6 +179,7 @@ class _TrackScreenState extends State<TrackScreen> {
                         ? null
                         : () {
                             trackerServices.onParticipantTap(bib);
+                            setState(() {});
                           },
                     child: Container(
                       decoration: BoxDecoration(

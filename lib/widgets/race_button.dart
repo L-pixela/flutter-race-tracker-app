@@ -4,6 +4,7 @@ import 'package:race_tracker_project/theme/theme.dart';
 class RaceButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final VoidCallback onLongPress;
   final double? width;
   final double? height;
   final bool isSelected;
@@ -15,6 +16,7 @@ class RaceButton extends StatelessWidget {
     this.width,
     this.height,
     this.isSelected = false,
+    required this.onLongPress,
   });
 
   @override
