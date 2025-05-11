@@ -69,6 +69,12 @@ class _TrackScreenState extends State<TrackScreen> {
             preferredSize: const Size.fromHeight(190),
             child: AppBar(
               backgroundColor: RaceColors.primary,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               automaticallyImplyLeading: false,
               flexibleSpace: SafeArea(
                 child: Center(
@@ -173,6 +179,7 @@ class _TrackScreenState extends State<TrackScreen> {
                         ? null
                         : () {
                             trackerServices.onParticipantTap(bib);
+                            setState(() {});
                           },
                     child: Container(
                       decoration: BoxDecoration(

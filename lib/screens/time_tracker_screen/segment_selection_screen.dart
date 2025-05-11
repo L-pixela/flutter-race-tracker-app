@@ -26,7 +26,6 @@ class SegmentSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final race = context.watch<RaceProvider>().races.data?.first;
     final stopwatchProvider = context.watch<StopwatchProvider>();
 
@@ -88,7 +87,7 @@ class SegmentSelectionScreen extends StatelessWidget {
             children: [
               Text(
                 'Select a Segment',
-                style: TextStyle(fontSize: 24),
+                style: RaceTextStyles.heading.copyWith(fontSize: 24),
               ),
               SizedBox(height: 20),
               Button(
