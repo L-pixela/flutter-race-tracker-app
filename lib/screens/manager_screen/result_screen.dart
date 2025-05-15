@@ -29,6 +29,16 @@ class ResultScreen extends StatelessWidget {
       );
     }
 
+    if (finishedParticipants.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Race Results", style: RaceTextStyles.darkHeading),
+          backgroundColor: RaceColors.primary,
+        ),
+        body: const Center(child: Text("No Participant finished yet.")),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Race Results", style: RaceTextStyles.darkHeading),
