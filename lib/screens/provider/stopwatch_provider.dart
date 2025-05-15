@@ -42,6 +42,12 @@ class StopwatchProvider with ChangeNotifier {
       _isPaused = true;
       notifyListeners();
     }
+    else{
+      _stopwatch.start();
+      _isRunning = true;
+      _isPaused = false;
+      notifyListeners();
+    }
   }
 
   void stop() {
