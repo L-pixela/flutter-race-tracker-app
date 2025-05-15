@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
-enum ButtonType { primary, secondary, disabled }
+enum ButtonType { primary, secondary, disabled, red }
 
 class Button extends StatelessWidget {
   final String text;
@@ -26,6 +26,7 @@ class Button extends StatelessWidget {
   bool get isPrimary => type == ButtonType.primary;
   bool get isSecondary => type == ButtonType.secondary;
   bool get isDisabled => type == ButtonType.disabled;
+  bool get isRed => type == ButtonType.red;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +34,17 @@ class Button extends StatelessWidget {
         ? RaceColors.primary
         : isSecondary
             ? RaceColors.white
-            : RaceColors.lightGrey.withOpacity(0.5);
+            : isRed
+                ? Colors.red
+                : RaceColors.lightGrey.withOpacity(0.5);
 
-    final Color borderColor = isPrimary
+    final Color borderColor = isPrimary || isRed
         ? Colors.transparent
         : isSecondary
             ? RaceColors.lightGrey
             : Colors.transparent;
 
-    final Color textColor = isPrimary
+    final Color textColor = isPrimary || isRed
         ? RaceColors.white
         : isSecondary
             ? RaceColors.primary
@@ -62,7 +65,7 @@ class Button extends StatelessWidget {
           ),
           side: border,
         ),
-        onPressed: isDisabled ? null : onPressed, // <- DISABLE the button
+        onPressed: isDisabled ? null : onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
