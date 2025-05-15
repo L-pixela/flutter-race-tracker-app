@@ -23,6 +23,7 @@ class _TrackScreenState extends State<TrackScreen> {
   late ParticipantProvider participantProvider;
 
   List<int> selectedIndexes = [];
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -65,6 +66,16 @@ class _TrackScreenState extends State<TrackScreen> {
       final filteredParticipants =
           value.data!.where((p) => p.raceId == widget.raceId).toList();
 
+      // Filter and sort participants
+
+      final filteredBib = filteredParticipants
+          .where((p) => p.bibNumber.toString().contains(_searchQuery))
+          .toList()
+        ..sort((a, b) => a.bibNumber.compareTo(b.bibNumber));
+
+      final displayList =
+          _searchQuery.isEmpty ? filteredParticipants : filteredBib;
+
       return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(190),
@@ -96,7 +107,7 @@ class _TrackScreenState extends State<TrackScreen> {
                           child: TextField(
                             onChanged: (value) {
                               setState(() {
-                                // _searchQuery = value.trim().toLowerCase();
+                                _searchQuery = value.trim().toLowerCase();
                               });
                             },
                             decoration: InputDecoration(
@@ -169,12 +180,11 @@ class _TrackScreenState extends State<TrackScreen> {
                   mainAxisSpacing: 12,
                   childAspectRatio: 1,
                 ),
-                itemCount: filteredParticipants.length,
+                itemCount: displayList.length,
                 itemBuilder: (context, index) {
-                  final participant = filteredParticipants[index];
+                  final participant = displayList[index];
                   final bib = participant.bibNumber;
                   final isDone = trackerServices.isCheckpointCompleted(bib);
-
                   return GestureDetector(
                     onTap: isDone
                         ? null

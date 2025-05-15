@@ -58,7 +58,6 @@ class _RaceScreenState extends State<RaceScreen> {
       backgroundColor: RaceColors.background,
       appBar: AppBar(
         title: Text("Race", style: RaceTextStyles.darkHeading),
-        centerTitle: true,
         backgroundColor: RaceColors.primary,
       ),
       body: Padding(

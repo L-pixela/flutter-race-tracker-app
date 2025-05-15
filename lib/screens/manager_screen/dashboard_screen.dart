@@ -223,11 +223,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
 
         // Filter and sort participants
-        final filtered = data
-            .where((p) =>
-                p.name.toLowerCase().contains(_searchQuery) ||
-                p.bibNumber.toString().contains(_searchQuery))
-            .toList()
+        final filtered = data.where((p) =>
+            p.name.toLowerCase().contains(_searchQuery) ||
+            p.bibNumber.toString().contains(_searchQuery)).toList()
           ..sort((a, b) => a.bibNumber.compareTo(b.bibNumber));
 
         if (filtered.isEmpty) {
