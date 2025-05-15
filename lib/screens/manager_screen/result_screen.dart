@@ -15,7 +15,19 @@ class ResultScreen extends StatelessWidget {
     final raceProvider = context.watch<RaceProvider>();
     final raceData = raceProvider.races.data!.first;
     final screenWidth = MediaQuery.of(context).size.width;
-    final dateTimeFormatted = DateTimeUtil.formatDateTime(raceData.startDate!);
+    final dateTimeFormatted = raceData.startDate != null
+        ? DateTimeUtil.formatDateTime(raceData.startDate!)
+        : 'No start date';
+
+    if (raceData.startDate == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Race Results", style: RaceTextStyles.darkHeading),
+          backgroundColor: RaceColors.primary,
+        ),
+        body: const Center(child: Text("Race has not started yet.")),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -49,51 +61,61 @@ class ResultScreen extends StatelessWidget {
 
             // Responsive Table
             Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minWidth: screenWidth),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: DataTable(
-                      headingRowColor: MaterialStateProperty.resolveWith<Color>(
-                        (states) => RaceColors.primary,
-                      ),
-                      dataRowColor: MaterialStateProperty.resolveWith<Color>(
-                        (states) => RaceColors.white,
-                      ),
-                      columnSpacing: RaceSpacings.m,
-                      columns: const [
-                        DataColumn(label: ResponsiveHeader(text: 'Rank')),
-                        DataColumn(label: ResponsiveHeader(text: 'Name')),
-                        DataColumn(label: ResponsiveHeader(text: 'BIB')),
-                        DataColumn(label: ResponsiveHeader(text: 'Time')),
-                      ],
-                      rows: finishedParticipants.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final p = entry.value;
-                        final totalTime =
-                            p.finishDate!.difference(p.startDate!);
-                        final totalTimeFormatted =
-                            DateTimeUtil.formatDuration(totalTime);
+              child: finishedParticipants.isEmpty
+                  ? Center(
+                      child: Text("Race not Started yet!"),
+                    )
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(minWidth: screenWidth),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTable(
+                            headingRowColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (states) => RaceColors.primary,
+                            ),
+                            dataRowColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (states) => RaceColors.white,
+                            ),
+                            columnSpacing: RaceSpacings.m,
+                            columns: const [
+                              DataColumn(label: ResponsiveHeader(text: 'Rank')),
+                              DataColumn(label: ResponsiveHeader(text: 'Name')),
+                              DataColumn(label: ResponsiveHeader(text: 'BIB')),
+                              DataColumn(label: ResponsiveHeader(text: 'Time')),
+                            ],
+                            rows: finishedParticipants
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                              final index = entry.key;
+                              final p = entry.value;
+                              final totalTime =
+                                  p.finishDate!.difference(p.startDate!);
+                              final totalTimeFormatted =
+                                  DateTimeUtil.formatDuration(totalTime);
 
-                        return DataRow(cells: [
-                          DataCell(Text('${index + 1}',
-                              style: RaceTextStyles.body
-                                  .copyWith(fontWeight: FontWeight.bold))),
-                          DataCell(Text(p.name, style: RaceTextStyles.body)),
-                          DataCell(Text(p.bibNumber.toString(),
-                              style: RaceTextStyles.body)),
-                          DataCell(Text(totalTimeFormatted,
-                              style: RaceTextStyles.body.copyWith(
-                                  color: RaceColors.primary,
-                                  fontWeight: FontWeight.bold))),
-                        ]);
-                      }).toList(),
+                              return DataRow(cells: [
+                                DataCell(Text('${index + 1}',
+                                    style: RaceTextStyles.body.copyWith(
+                                        fontWeight: FontWeight.bold))),
+                                DataCell(
+                                    Text(p.name, style: RaceTextStyles.body)),
+                                DataCell(Text(p.bibNumber.toString(),
+                                    style: RaceTextStyles.body)),
+                                DataCell(Text(totalTimeFormatted,
+                                    style: RaceTextStyles.body.copyWith(
+                                        color: RaceColors.primary,
+                                        fontWeight: FontWeight.bold))),
+                              ]);
+                            }).toList(),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:race_tracker_project/model/race/race.dart';
+import 'package:race_tracker_project/screens/provider/race_provider.dart';
 import 'package:race_tracker_project/screens/provider/stopwatch_provider.dart';
 import 'package:race_tracker_project/services/race_services.dart';
 import 'package:race_tracker_project/theme/theme.dart';
+import 'package:race_tracker_project/widgets/app_button.dart';
 
 class RaceActionBar extends StatelessWidget {
   final Race race;
@@ -19,35 +21,50 @@ class RaceActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stopwatchProvider = context.read<StopwatchProvider>();
+    final raceProvider = context.watch<RaceProvider>();
+
+    final bool isRunningOrPaused =
+        stopwatchProvider.isRunning || stopwatchProvider.isPaused;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: RaceSpacings.l),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Left Button: Start/Stop
-          _buildTextButton(
-            stopwatchProvider.isRunning || stopwatchProvider.isPaused
-                ? "Stop"
-                : "Start",
-            RaceColors.buttonPrimary,
-            () async {
-              if (stopwatchProvider.isRunning || stopwatchProvider.isPaused) {
-                await raceServices.stopRace(race);
-                stopwatchProvider.stop();
-              } else {
-                await raceServices.startRace(race);
-                stopwatchProvider.start();
-              }
-            },
-          ),
+          // Start / Stop Button
+          raceProvider.races.data!.first.raceStatus == RaceStatus.completed
+              ? Button(
+                  text: isRunningOrPaused ? "Stop" : "Start",
+                  type: ButtonType.disabled,
+                  width: 120,
+                  height: 50,
+                  onPressed: () {},
+                )
+              : Button(
+                  text: isRunningOrPaused ? "Stop" : "Start",
+                  type: ButtonType.primary,
+                  width: 120,
+                  height: 50,
+                  onPressed: () async {
+                    if (isRunningOrPaused) {
+                      await raceServices.stopRace(race);
+                      stopwatchProvider.stop();
+                    } else {
+                      await raceServices.startRace(race);
+                      stopwatchProvider.start();
+                    }
+                  },
+                ),
 
-          // Right Button: Pause/Resume
-          _buildTextButton(
-            stopwatchProvider.isPaused ? "Resume" : "Pause",
-            RaceColors.buttonSecondary,
-            (!race.isCompleted() &&
-                    (stopwatchProvider.isRunning || stopwatchProvider.isPaused))
+          // Pause / Resume Button
+          Button(
+            text: stopwatchProvider.isPaused ? "Resume" : "Pause",
+            type: (!race.isCompleted() && isRunningOrPaused)
+                ? ButtonType.secondary
+                : ButtonType.disabled,
+            width: 120,
+            height: 50,
+            onPressed: (!race.isCompleted() && isRunningOrPaused)
                 ? () {
                     if (stopwatchProvider.isPaused) {
                       stopwatchProvider.start(); // Resume
@@ -58,27 +75,6 @@ class RaceActionBar extends StatelessWidget {
                 : null,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTextButton(String text, Color color, VoidCallback? onPressed) {
-    return SizedBox(
-      width: 120,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          padding: const EdgeInsets.symmetric(
-            vertical: RaceSpacings.m,
-            horizontal: RaceSpacings.l,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(RaceSpacings.m),
-          ),
-        ),
-        child: Text(text, style: RaceTextStyles.button),
       ),
     );
   }

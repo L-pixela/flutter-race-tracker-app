@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:race_tracker_project/model/participant/participant.dart';
+import 'package:race_tracker_project/model/race/race.dart';
 import 'package:race_tracker_project/screens/manager_screen/dialogs/gender_selection_dialog.dart';
 import 'package:race_tracker_project/screens/manager_screen/dialogs/participant_form_dialog.dart';
 import 'package:race_tracker_project/screens/manager_screen/widgets/participant_tile.dart';
 import 'package:race_tracker_project/screens/provider/async_value.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:race_tracker_project/screens/provider/race_provider.dart';
 import 'package:race_tracker_project/screens/time_tracker_screen/segment_selection_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/widgets/app_button.dart';
@@ -90,6 +92,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final participantProvider = context.watch<ParticipantProvider>();
+    final raceProvider = context.watch<RaceProvider>();
+
+    if (raceProvider.races.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -146,19 +155,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Button(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SegmentSelectionScreen(),
+                      raceProvider.races.data!.first.raceStatus ==
+                                  RaceStatus.upcoming ||
+                              raceProvider.races.data!.first.raceStatus ==
+                                  RaceStatus.completed
+                          ? Button(
+                              onPressed: () {},
+                              type: ButtonType.disabled,
+                              text: 'Tracker',
+                              icon: Icons.timer,
+                            )
+                          : Button(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SegmentSelectionScreen(),
+                                  ),
+                                );
+                              },
+                              type: ButtonType.secondary,
+                              text: 'Tracker',
+                              icon: Icons.timer,
                             ),
-                          );
-                        },
-                        type: ButtonType.secondary,
-                        text: 'Tracker',
-                        icon: Icons.timer,
-                      ),
                     ],
                   ),
                 ],
@@ -223,9 +243,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
 
         // Filter and sort participants
-        final filtered = data.where((p) =>
-            p.name.toLowerCase().contains(_searchQuery) ||
-            p.bibNumber.toString().contains(_searchQuery)).toList()
+        final filtered = data
+            .where((p) =>
+                p.name.toLowerCase().contains(_searchQuery) ||
+                p.bibNumber.toString().contains(_searchQuery))
+            .toList()
           ..sort((a, b) => a.bibNumber.compareTo(b.bibNumber));
 
         if (filtered.isEmpty) {

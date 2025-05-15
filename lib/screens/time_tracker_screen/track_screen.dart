@@ -205,7 +205,9 @@ class _TrackScreenState extends State<TrackScreen> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: isDone ? Colors.grey : Colors.blue,
+                            color: isDone
+                                ? RaceColors.disabled
+                                : RaceColors.orange,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           alignment: Alignment.center,
