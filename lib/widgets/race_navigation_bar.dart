@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:race_tracker_project/data/firebase/firebase_race_repository.dart';
+import 'package:race_tracker_project/data/repository/race_repository.dart';
 import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
 import 'package:race_tracker_project/screens/manager_screen/race_screen.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 
-class Navigation_Bar extends StatefulWidget {
+class RaceNavigationBar extends StatefulWidget {
   final int initialIndex;
-  const Navigation_Bar({super.key, this.initialIndex = 0});
+  const RaceNavigationBar({super.key, this.initialIndex = 0});
+
   @override
-  _Navigation_BarState createState() => _Navigation_BarState();
+  RaceNavigationBarState createState() => RaceNavigationBarState();
 }
 
-class _Navigation_BarState extends State<Navigation_Bar> {
+class RaceNavigationBarState extends State<RaceNavigationBar> {
   int _selectedIndex = 0;
+  RaceRepository raceData = FirebaseRaceRepository();
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class _Navigation_BarState extends State<Navigation_Bar> {
   //   // RankScreen(),
   //   // AccountScreen(),
   // ];
+
   void _onItemTapped(int index, BuildContext context) {
     if (_selectedIndex == index) return; // Already on this screen
 

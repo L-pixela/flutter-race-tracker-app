@@ -13,9 +13,9 @@ class TimeTrackerServices extends ChangeNotifier {
   RaceSegment? _selectedSegment;
   String? _activeRaceId;
   final Map<int, int> _participantTapCount = {}; // bibNumber -> tap count
-  final Map<int, DateTime> _raceStartTimes = {};
-  final Map<int, DateTime> _raceFinishTimes = {};
-  final Map<String, Checkpoint> _checkpoints = {};
+  final Map<int, DateTime> _raceStartTimes = {}; // bibNumber -> start time
+  final Map<int, DateTime> _raceFinishTimes = {}; // bibNumber -> finish time
+  final Map<String, Checkpoint> _checkpoints = {}; // bibNumber -> Checkpoint
 
   TimeTrackerServices(
       {required this.checkpointRepository, required this.participantProvider});
