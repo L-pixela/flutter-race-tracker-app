@@ -67,8 +67,6 @@ class _MyAppState extends State<MyApp> {
     DashboardScreen(),
     RaceScreen(),
     ResultScreen(),
-    Placeholder(),
-    Placeholder(), // TODO for Rank Screen
     ProfileScreen(),
   ];
 

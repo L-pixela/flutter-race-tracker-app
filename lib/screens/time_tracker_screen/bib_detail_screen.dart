@@ -55,6 +55,13 @@ class BibDetailScreen extends StatelessWidget {
                     text: 'Reset',
                     onPressed: () {
                       timeTrackerServices.undoLastTap(bibNumber);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Reset for BIB $bibNumber'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ],

@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-class DateTimeUtil {
 
+class DateTimeUtil {
   static String formatDuration(Duration duration) {
     final hours = duration.inHours.toString().padLeft(2, '0');
     final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
@@ -29,7 +28,7 @@ class DateTimeUtil {
   }
 
   static String formatTime(DateTime dateTime) {
-    return DateFormat('HH:mm').format(dateTime); // Example: 14:30 (24-hour format)
+    return DateFormat('HH:mm')
+        .format(dateTime); // Example: 14:30 (24-hour format)
   }
 }
-  

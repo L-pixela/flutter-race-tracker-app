@@ -173,46 +173,51 @@ class _TrackScreenState extends State<TrackScreen> {
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 1,
-                ),
-                itemCount: displayList.length,
-                itemBuilder: (context, index) {
-                  final participant = displayList[index];
-                  final bib = participant.bibNumber;
-                  final isDone = trackerServices.isCheckpointCompleted(bib);
-                  return GestureDetector(
-                    onTap: isDone
-                        ? null
-                        : () {
-                            trackerServices.onParticipantTap(bib);
-                            setState(() {});
-                          },
-                    onLongPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (ctx) => BibDetailScreen(
-                                    bibNumber: participant.bibNumber,
-                                  )));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isDone ? Colors.grey : Colors.blue,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'BIB $bib',
-                        style: const TextStyle(color: Colors.white),
-                      ),
+            child: Consumer<TimeTrackerServices>(
+              builder: (context, tracker, _) {
+                return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1,
                     ),
-                  );
-                }),
+                    itemCount: displayList.length,
+                    itemBuilder: (context, index) {
+                      final participant = displayList[index];
+                      final bib = participant.bibNumber;
+                      final isDone = trackerServices.isCheckpointCompleted(bib);
+                      return GestureDetector(
+                        onTap: isDone
+                            ? null
+                            : () {
+                                trackerServices.onParticipantTap(bib);
+                                setState(() {});
+                              },
+                        onLongPress: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => BibDetailScreen(
+                                        bibNumber: participant.bibNumber,
+                                      )));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isDone ? Colors.grey : Colors.blue,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'BIB $bib',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    });
+              },
+            ),
           ));
     });
   }

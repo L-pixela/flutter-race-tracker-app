@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/provider/race_provider.dart';
-import 'package:race_tracker_project/services/race_services.dart';
 import 'package:race_tracker_project/theme/theme.dart';
 import 'package:race_tracker_project/utils/date_time_util.dart';
 
@@ -38,7 +37,7 @@ class ResultScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: RaceSpacings.s / 2),
                 Text(
-                  dateTimeFormatted ,
+                  dateTimeFormatted,
                   style: RaceTextStyles.body.copyWith(
                     color: RaceColors.textSubtle,
                   ),
@@ -73,14 +72,22 @@ class ResultScreen extends StatelessWidget {
                       rows: finishedParticipants.asMap().entries.map((entry) {
                         final index = entry.key;
                         final p = entry.value;
-                        final totalTime = p.finishDate!.difference(p.startDate!);
-                        final totalTimeFormatted = DateTimeUtil.formatDuration(totalTime);
+                        final totalTime =
+                            p.finishDate!.difference(p.startDate!);
+                        final totalTimeFormatted =
+                            DateTimeUtil.formatDuration(totalTime);
 
                         return DataRow(cells: [
-                          DataCell(Text('${index + 1}', style: RaceTextStyles.body.copyWith(fontWeight: FontWeight.bold))),
+                          DataCell(Text('${index + 1}',
+                              style: RaceTextStyles.body
+                                  .copyWith(fontWeight: FontWeight.bold))),
                           DataCell(Text(p.name, style: RaceTextStyles.body)),
-                          DataCell(Text(p.bibNumber.toString(), style: RaceTextStyles.body)),
-                          DataCell(Text(totalTimeFormatted, style: RaceTextStyles.body.copyWith(color: RaceColors.primary, fontWeight: FontWeight.bold))),
+                          DataCell(Text(p.bibNumber.toString(),
+                              style: RaceTextStyles.body)),
+                          DataCell(Text(totalTimeFormatted,
+                              style: RaceTextStyles.body.copyWith(
+                                  color: RaceColors.primary,
+                                  fontWeight: FontWeight.bold))),
                         ]);
                       }).toList(),
                     ),
@@ -93,8 +100,6 @@ class ResultScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
 
 class ResponsiveHeader extends StatelessWidget {

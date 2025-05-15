@@ -10,10 +10,7 @@ import 'package:race_tracker_project/data/repository/checkpoint_repository.dart'
 import 'package:race_tracker_project/data/repository/participant_repository.dart';
 import 'package:race_tracker_project/data/repository/race_repository.dart';
 import 'package:race_tracker_project/firebase_options.dart';
-import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
-import 'package:race_tracker_project/screens/manager_screen/race_screen.dart';
 import 'package:race_tracker_project/screens/provider/checkpoint_provider.dart';
-import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/provider/race_provider.dart';
 import 'package:race_tracker_project/screens/provider/stopwatch_provider.dart';
 import 'package:race_tracker_project/services/time_tracker_services.dart';
