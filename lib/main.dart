@@ -11,6 +11,7 @@ import 'package:race_tracker_project/data/repository/race_repository.dart';
 import 'package:race_tracker_project/firebase_options.dart';
 import 'package:race_tracker_project/screens/manager_screen/dashboard_screen.dart';
 import 'package:race_tracker_project/screens/manager_screen/race_screen.dart';
+import 'package:race_tracker_project/screens/manager_screen/result_screen.dart';
 import 'package:race_tracker_project/screens/provider/checkpoint_provider.dart';
 import 'package:race_tracker_project/screens/provider/participant_provider.dart';
 import 'package:race_tracker_project/screens/provider/race_provider.dart';
@@ -64,8 +65,8 @@ class _MyAppState extends State<MyApp> {
   final List<Widget> _screens = const [
     DashboardScreen(),
     RaceScreen(),
-    Placeholder(), // TODO for Rank Screen
-    Placeholder(), // TODO for Settings Screen
+    ResultScreen(), 
+    Placeholder(),
   ];
 
   void _onItemTapped(int index) {
