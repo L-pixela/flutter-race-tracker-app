@@ -4,19 +4,12 @@ import 'package:race_tracker_project/model/race/race.dart';
 
 class MockRaceRepository implements RaceRepository {
   final Map<String, Race> _races = {
-    'r1': Race(
+    'R1': Race(
       raceId: 'r1',
       raceEvent: 'City Triathlon',
       raceStatus: RaceStatus.ongoing,
       location: Location(name: 'Paris', region: Region.europe),
       startDate: DateTime.now(),
-    ),
-    'r2': Race(
-      raceId: 'r2',
-      raceEvent: 'Beach Dash',
-      raceStatus: RaceStatus.upcoming,
-      location: Location(name: 'Sydney', region: Region.oceania),
-      startDate: DateTime.now().add(Duration(days: 5)),
     ),
   };
 

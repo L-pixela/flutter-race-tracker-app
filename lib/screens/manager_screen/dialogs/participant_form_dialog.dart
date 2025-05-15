@@ -66,8 +66,7 @@ class _ParticipantFormDialogState extends State<ParticipantFormDialog> {
         orElse: () => allRaces.first,
       );
       raceId = _selectedRace!.raceId;
-      setState(
-          () {}); // <- Important! Force widget to rebuild with new _selectedRace
+      setState(() {});
     }
   }
 

@@ -7,7 +7,7 @@ class AddUser extends StatelessWidget {
   final String company;
   final int age;
 
-  AddUser(this.fullName, this.company, this.age);
+  const AddUser(this.fullName, this.company, this.age, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class AddUser extends StatelessWidget {
 class GetUserByName extends StatelessWidget {
   final String fullName;
 
-  GetUserByName(this.fullName);
+  const GetUserByName(this.fullName, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +48,9 @@ class GetUserByName extends StatelessWidget {
       future: users.where('full_name', isEqualTo: fullName).get(),
       builder: (context, snapshot) {
         if (snapshot.hasError) return Text("Something went wrong");
-        if (snapshot.connectionState != ConnectionState.done)
+        if (snapshot.connectionState != ConnectionState.done) {
           return Text("loading...");
+        }
 
         if (snapshot.data!.docs.isEmpty) return Text("User not found");
 
@@ -64,7 +65,7 @@ class GetUserByName extends StatelessWidget {
 class UpdateUserByName extends StatelessWidget {
   final String fullName;
 
-  UpdateUserByName(this.fullName);
+  const UpdateUserByName(this.fullName, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class UpdateUserByName extends StatelessWidget {
 class DeleteUserByName extends StatelessWidget {
   final String fullName;
 
-  DeleteUserByName(this.fullName);
+  const DeleteUserByName(this.fullName, {super.key});
 
   @override
   Widget build(BuildContext context) {

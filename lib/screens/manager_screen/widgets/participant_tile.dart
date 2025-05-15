@@ -21,42 +21,48 @@ class ParticipantTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        // shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(RaceSpacings.radius),
-        //     side: BorderSide(color: RaceColors.primary, width: 1)),
-        child: ListTile(
-      title: Text(title, style: RaceTextStyles.body),
-      subtitle: Text(
-        subTitle,
-        style: RaceTextStyles.label.copyWith(color: RaceColors.orange),
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            trailing,
-            style: RaceTextStyles.label.copyWith(color: RaceColors.orange),
-          ),
-          const SizedBox(width: 10),
-          IconButton(
-            icon: Icon(
-              Icons.edit_square,
-              color: RaceColors.primary,
+      elevation: 6, // Controls the shadow depth
+      shadowColor: RaceColors.primary.withOpacity(0.5), // Softer shadow
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(RaceSpacings.radius),
+      //   side: BorderSide(color: RaceColors.primary, width: 1),
+      // ),
+      margin: const EdgeInsets.symmetric(
+          horizontal: 12, vertical: 6), // Optional spacing
+      child: ListTile(
+        tileColor: RaceColors.buttonAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(RaceSpacings.radius),
+        ),
+        title: Text(title,
+            style: RaceTextStyles.heading
+                .copyWith(fontSize: 14, fontWeight: FontWeight.w600)),
+        subtitle: Text(
+          subTitle,
+          style: RaceTextStyles.label.copyWith(color: RaceColors.orange),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              trailing,
+              style: RaceTextStyles.label.copyWith(color: RaceColors.orange),
             ),
-            onPressed: onEdit,
-            iconSize: 20,
-          ),
-          const SizedBox(width: 2),
-          IconButton(
-            icon: Icon(
-              Icons.delete_outline,
-              color: Colors.red,
+            const SizedBox(width: 10),
+            IconButton(
+              icon: Icon(Icons.edit_square, color: RaceColors.primary),
+              onPressed: onEdit,
+              iconSize: 20,
             ),
-            onPressed: onDelete,
-            iconSize: 20,
-          ),
-        ],
+            const SizedBox(width: 2),
+            IconButton(
+              icon: Icon(Icons.delete_outline, color: Colors.red),
+              onPressed: onDelete,
+              iconSize: 20,
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

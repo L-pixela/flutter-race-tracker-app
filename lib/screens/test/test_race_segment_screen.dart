@@ -33,8 +33,10 @@ void main() async {
         ChangeNotifierProvider(
             create: (context) => RaceProvider(repository: raceRepository)),
         ChangeNotifierProvider(
-            create: (context) =>
-                TimeTrackerServices(checkpointRepository: checkpointRepository))
+            create: (context) => TimeTrackerServices(
+                checkpointRepository: checkpointRepository,
+                participantProvider:
+                    ParticipantProvider(repository: participantRepository)))
       ],
       child: MaterialApp(
         home: TimeTrackerTestScreen(),

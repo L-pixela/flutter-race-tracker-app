@@ -50,6 +50,13 @@ class StopwatchProvider with ChangeNotifier {
     }
   }
 
+  void stop() {
+    _stopwatch.stop();
+    _isRunning = false;
+    _isPaused = false;
+    notifyListeners();
+  }
+
   void reset() {
     _stopwatch.reset();
     _timeDisplay = "00:00:00.00";
@@ -64,7 +71,8 @@ class StopwatchProvider with ChangeNotifier {
     String twoDigitHours = twoDigits(duration.inHours);
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    String twoDigitMilliseconds = twoDigits(duration.inMilliseconds.remainder(1000) ~/ 10);
+    String twoDigitMilliseconds =
+        twoDigits(duration.inMilliseconds.remainder(1000) ~/ 10);
     return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds.$twoDigitMilliseconds";
   }
 

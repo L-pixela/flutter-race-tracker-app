@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:race_tracker_project/screens/provider/participant_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:race_tracker_project/data/firebase/firebase_checkpoint_repository.dart';
 
 import 'package:race_tracker_project/data/firebase/firebase_participant_repository.dart';
@@ -62,9 +63,9 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = const [
-    DashboardScreen(),
-    RaceScreen(),
-    Placeholder(), // TODO for Rank Screen
+    ResultTestingScreen(),
+    Placeholder(),
+    Placeholder(),
     Placeholder(), // TODO for Settings Screen
   ];
 
@@ -88,6 +89,39 @@ class _MyAppState extends State<MyApp> {
           selectedIndex: _selectedIndex,
           onItemTapped: _onItemTapped,
         ),
+      ),
+    );
+  }
+}
+
+class ResultTestingScreen extends StatelessWidget {
+  const ResultTestingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<ParticipantProvider>();
+    final finishedParticipants = provider.getSortedFinishedParticipant();
+
+    return Scaffold(
+      body: Column(
+        children: [
+          Text("COOOKIE"),
+          Expanded(
+            child: ListView.builder(
+              itemCount: finishedParticipants.length,
+              itemBuilder: (context, index) {
+                final p = finishedParticipants[index];
+                final totalTime = p.finishDate!.difference(p.startDate!);
+
+                return ListTile(
+                  title: Text('BIB: ${p.bibNumber} - ${p.name}'),
+                  subtitle: Text('Time: ${totalTime.inMinutes} mins'),
+                  leading: Text('#${index + 1}'),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

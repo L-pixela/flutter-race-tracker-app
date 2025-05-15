@@ -14,9 +14,7 @@ class FirebaseLocationRepository implements LocationRepository {
       return _firestore
           .collection(_collection)
           .doc(location.name)
-          .set(locationJson)
-          .then((_) => print("Location added successfully"))
-          .catchError((error) => print("Failed to add location: $error"));
+          .set(locationJson);
     } catch (e) {
       throw Exception('Failed to add location: $e');
     }
@@ -26,11 +24,10 @@ class FirebaseLocationRepository implements LocationRepository {
   Future<List<Location>> getAllLocations() {
     try {
       return _firestore.collection(_collection).get().then((snapshot) {
-        print("Locations fetched successfully");
         return snapshot.docs
             .map((doc) => LocationDto.fromJson(doc.data()))
             .toList();
-      }).catchError((error) => print("Failed to fetch locations: $error"));
+      });
     } catch (e) {
       throw Exception('Failed to fetch locations: $e');
     }

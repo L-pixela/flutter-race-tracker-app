@@ -6,11 +6,11 @@ import 'package:race_tracker_project/data/dto/checkpoint_dto.dart';
 void main() {
   final testDateTime = DateTime(2025, 4, 20, 12, 0);
   final testCheckpoint = Checkpoint(
-    id: 1,
+    id: "1",
     raceId: 'race_001',
     bibNumber: 99,
     segment: RaceSegment.running,
-    timeStamp: testDateTime,
+    startTime: testDateTime,
   );
 
   group('CheckpointDto Tests', () {
@@ -18,21 +18,21 @@ void main() {
       final json = CheckpointDto.toJson(testCheckpoint);
 
       expect(json, {
-        'id': 1,
+        'id': "1",
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'Running',
-        'timeStamp': testDateTime.toIso8601String(),
+        'startTime': testDateTime.toIso8601String(),
       });
     });
 
     test('should convert JSON to Checkpoint correctly', () {
       final json = {
-        'id': 1,
+        'id': "1",
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'Running',
-        'timeStamp': '2025-04-20T12:00:00.000',
+        'startTime': '2025-04-20T12:00:00.000',
       };
 
       final checkpoint = CheckpointDto.fromJson(json);
@@ -40,16 +40,16 @@ void main() {
       expect(checkpoint.raceId, testCheckpoint.raceId);
       expect(checkpoint.bibNumber, testCheckpoint.bibNumber);
       expect(checkpoint.segment, testCheckpoint.segment);
-      expect(checkpoint.timeStamp, testCheckpoint.timeStamp);
+      expect(checkpoint.startTime, testCheckpoint.startTime);
     });
 
     test('should throw exception on invalid segment', () {
       final json = {
-        'id': 1,
+        'id': "1",
         'raceId': 'race_001',
         'bibNumber': 99,
         'segment': 'InvalidSegment',
-        'timeStamp': '2025-04-20T12:00:00.000',
+        'startTime': '2025-04-20T12:00:00.000',
       };
 
       expect(() => CheckpointDto.fromJson(json), throwsException);

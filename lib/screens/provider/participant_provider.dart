@@ -102,4 +102,32 @@ class ParticipantProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Participant? getParticipantByBib(int bibNumber) {
+    final list = participant.data;
+    if (list == null) return null;
+    return list.firstWhere(
+      (p) => p.bibNumber == bibNumber,
+    );
+  }
+
+  List<Participant> getSortedFinishedParticipant() {
+    final allParticipants = participant.data;
+    if (allParticipants == null) return [];
+
+    final finished = allParticipants
+        .where((p) =>
+            p.participantStatus == ParticipantStatus.finished &&
+            p.startDate != null &&
+            p.finishDate != null)
+        .toList();
+
+    finished.sort((a, b) {
+      final durationA = a.finishDate!.difference(a.startDate!);
+      final durationB = b.finishDate!.difference(b.startDate!);
+      return durationA.compareTo(durationB);
+    });
+
+    return finished;
+  }
 }

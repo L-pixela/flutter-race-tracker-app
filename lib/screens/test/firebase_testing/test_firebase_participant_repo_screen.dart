@@ -15,7 +15,7 @@ void main() async {
 }
 
 class ParticipantScreen extends StatefulWidget {
-  const ParticipantScreen({Key? key}) : super(key: key);
+  const ParticipantScreen({super.key});
 
   @override
   State<ParticipantScreen> createState() => _ParticipantScreenState();
